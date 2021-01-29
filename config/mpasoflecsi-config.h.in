@@ -1,0 +1,25 @@
+#------------------------------------------------------------------------------#
+# Copyright (c) 2016, Triad National Security, LLC
+# All rights reserved
+#------------------------------------------------------------------------------#
+
+#------------------------------------------------------------------------------#
+# Set the path to the MPAS headers.
+#------------------------------------------------------------------------------#
+
+set(MPASOFleCSI_INCLUDE_DIRS @MPAS_INCLUDE_DIRS@)
+
+#------------------------------------------------------------------------------#
+# MPAS library dependencies (contains definitions for IMPORTED targets)
+#------------------------------------------------------------------------------#
+
+if(NOT TARGET  mpasoflecsi AND NOT MPAS_BINARY_DIR)
+  include(@MPAS_CMAKE_DIR@/MPASOFleCSITargets.cmake)
+endif()
+
+#------------------------------------------------------------------------------#
+# Set the FleCSI libraries.
+#------------------------------------------------------------------------------#
+
+set(MPASOFleCSI_LIBRARIES mpasoflecsi)
+set(MPASOFleCSI_LIBRARY_DEPENDENCIES @MPAS_LIBRARY_DEPENDENCIES@)

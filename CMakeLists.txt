@@ -1,0 +1,106 @@
+#------------------------------------------------------------------------------#
+# Copyright (c) 2016, Triad National Security, LLC
+# All rights reserved
+#------------------------------------------------------------------------------#
+
+cmake_minimum_required(VERSION 3.12)
+
+#------------------------------------------------------------------------------#
+# Set the project name.
+#------------------------------------------------------------------------------#
+
+project(mpasoflecsi LANGUAGES CXX C)
+
+#------------------------------------------------------------------------------#
+# FleCSI currently depends on C++17.
+#------------------------------------------------------------------------------#
+
+set(CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 17)
+
+#------------------------------------------------------------------------------#
+# Compiler version requirements.
+#------------------------------------------------------------------------------#
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS "9.0")
+    message(FATAL_ERROR "Version 9.0 of gnu compilers required!")
+  endif()
+endif()
+
+#------------------------------------------------------------------------------#
+# Add local module path.
+#------------------------------------------------------------------------------#
+
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+
+#----------------------------------------------------------------------------#
+# These variables are used to collect library and include dependencies
+# for the MPASConfig file below.
+#----------------------------------------------------------------------------#
+
+set(MPAS_INCLUDE_DEPENDENCIES)
+set(MPAS_LIBRARY_DEPENDENCIES)
+
+#------------------------------------------------------------------------------#
+# Find the FleCSI installation.
+#
+# The easiest way to help CMake find FleCSI is to install it,
+# and add the location to the CMAKE_PREFIX_PATH environment variable.
+#------------------------------------------------------------------------------#
+
+find_package(FleCSI REQUIRED)
+include_directories(${FleCSI_INCLUDE_DIRS})
+
+message (STATUS "FleCSI runtime model: " ${FleCSI_RUNTIME_MODEL})
+
+list (APPEND MPAS_LIBRARY_DEPENDENCIES ${FleCSI_LIBRARIES} ${FleCSI_LIBRARY_DEPENDENCIES})
+
+#------------------------------------------------------------------------------#
+# Find the Kokkos installation.
+#------------------------------------------------------------------------------#
+
+find_package(Kokkos REQUIRED)
+
+#------------------------------------------------------------------------------#
+# HDF5
+#------------------------------------------------------------------------------#
+#
+#find_package(HDF5 COMPONENTS C HL REQUIRED)
+
+#include_directories( ${HDF5_INCLUDE_DIRS} )
+#list(APPEND MPAS_LIBRARY_DEPENDENCIES ${HDF5_LIBRARIES} )
+#message( STATUS "IO with HDF5 is enabled" )
+
+
+#------------------------------------------------------------------------------#
+# Apps
+#------------------------------------------------------------------------------#
+
+add_subdirectory(apps)
+
+#------------------------------------------------------------------------------#
+# MPASOFLeCSI library
+#------------------------------------------------------------------------------#
+
+include(library)
+add_library_target(mpasoflecsi mpasoflecsi EXPORT_TARGET MPASOFleCSITargets)
+message(STATUS "MPAS Libs: " "${MPAS_LIBRARY_DEPENDENCIES}")
+target_link_libraries(mpasoflecsi INTERFACE ${MPAS_LIBRARY_DEPENDENCIES})
+
+#----------------------------------------------------------------------------#
+# CMake config file: This should be the last thing to happen.
+#----------------------------------------------------------------------------#
+set(MPAS_CMAKE_DIR ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/mapsoflecsi)
+
+configure_file(${PROJECT_SOURCE_DIR}/config/mpasoflecsi-config.h.in
+  ${CMAKE_BINARY_DIR}/mpasoflecsi-config.h @ONLY)
+install(FILES ${CMAKE_BINARY_DIR}/mpasoflecsi-config.h DESTINATION include)
+
+#install(
+#    EXPORT MPASOFleCSITargets
+#    DESTINATION ${MPAS_CMAKE_DIR}
+#  )
+
+include_directories(${CMAKE_BINARY_DIR})
+
