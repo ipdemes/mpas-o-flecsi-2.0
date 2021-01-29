@@ -99,7 +99,7 @@ install(FILES ${CMAKE_BINARY_DIR}/mpasoflecsi-config.h DESTINATION include)
 
 #install(
 #    EXPORT MPASOFleCSITargets
-#    DESTINATION ${MPAS_CMAKE_DIR}
+#    DESTINATION include
 #  )
 
 include_directories(${CMAKE_BINARY_DIR})

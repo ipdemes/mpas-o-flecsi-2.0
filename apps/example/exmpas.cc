@@ -4,29 +4,30 @@
  *                                                                                     */
 
 
+#include "finalize.hh"
+#include "initialize.hh"
+#include "run.hh"
+
+#include <mpasoflecsi/specialization/control.hh>
+
 #include <flecsi/execution.hh>
 #include <flecsi/flog.hh>
+
+using namespace flecsi;
 
 int
 main(int argc, char ** argv) {
   auto status = flecsi::initialize(argc, argv);
 
-  if(status != flecsi::run::status::success) {
-    return status == flecsi::run::status::help ? 0 : status;
-  }
-#if 0
-  status = control::check_options();
+  status = mpas::control::check_status(status);
 
   if(status != flecsi::run::status::success) {
-    flecsi::finalize();
-    return status == flecsi::run::status::option ? 0 : status;
-  } // if
+    return status < flecsi::run::status::clean ? 0 : status;
+  }
 
   flecsi::log::add_output_stream("clog", std::clog, true);
 
-  status = flecsi::start(control::execute);
-
-#endif
+  status = flecsi::start(mpas::control::execute);
 
   flecsi::finalize();
 
