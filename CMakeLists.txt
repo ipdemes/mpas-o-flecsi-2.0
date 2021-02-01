@@ -60,17 +60,17 @@ list (APPEND MPAS_LIBRARY_DEPENDENCIES ${FleCSI_LIBRARIES} ${FleCSI_LIBRARY_DEPE
 # Find the Kokkos installation.
 #------------------------------------------------------------------------------#
 
-find_package(Kokkos REQUIRED)
+#find_package(Kokkos REQUIRED)
 
 #------------------------------------------------------------------------------#
 # HDF5
 #------------------------------------------------------------------------------#
 #
-#find_package(HDF5 COMPONENTS C HL REQUIRED)
+find_package(HDF5 COMPONENTS C HL REQUIRED)
 
-#include_directories( ${HDF5_INCLUDE_DIRS} )
-#list(APPEND MPAS_LIBRARY_DEPENDENCIES ${HDF5_LIBRARIES} )
-#message( STATUS "IO with HDF5 is enabled" )
+include_directories( ${HDF5_INCLUDE_DIRS} )
+list(APPEND MPAS_LIBRARY_DEPENDENCIES ${HDF5_LIBRARIES} )
+message( STATUS "IO with HDF5 is enabled" )
 
 
 #------------------------------------------------------------------------------#
