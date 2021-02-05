@@ -1,0 +1,49 @@
+#------------------------------------------------------------------------------#
+# FleCSI Gitlab CI: Environments
+#------------------------------------------------------------------------------#
+
+include: .gitlab/templates.yml
+
+mpich:
+  extends: .env_template
+  dependencies: []
+  variables:
+    ENVIRONMENT: master
+    MPI_PROVIDER: mpich
+    REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
+    IMAGE: centos-8
+    VERSION: mpasoflecsi-deps
+    VARIANTS: +hdf5 +kokkos
+
+mpich-clang:
+  extends: .env_template
+  dependencies: []
+  variables:
+    ENVIRONMENT: master
+    MPI_PROVIDER: mpich
+    REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
+    IMAGE: clearlinux
+    VERSION: mpasoflecsi-deps
+    VARIANTS: +hdf5 +kokkos
+
+openmpi:
+  extends: .env_template
+  dependencies: []
+  variables:
+    ENVIRONMENT: master
+    MPI_PROVIDER: openmpi
+    REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
+    IMAGE: centos-8
+    VERSION: mpasoflecsi-deps
+    VARIANTS: +hdf5
+
+openmpi-clang:
+  extends: .env_template
+  dependencies: []
+  variables:
+    ENVIRONMENT: devel
+    MPI_PROVIDER: openmpi
+    REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
+    IMAGE: clearlinux
+    VERSION: mpasoflecsi-deps
+    VARIANTS: +hdf5
