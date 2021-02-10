@@ -5,8 +5,10 @@
 
 set(specialization_HEADERS
   control.hh
-  mesh.hh
-)
+  mesh.hh)
+
+set(specialization_SOURCES
+  mesh.cc)
 
 #------------------------------------------------------------------------------#
 # Export header list to parent scope.
@@ -17,3 +19,6 @@ set(specialization_HEADERS
   PARENT_SCOPE
 )
 
+set(specialization_SOURCES
+  ${specialization_SOURCES}
+  PARENT_SCOPE)

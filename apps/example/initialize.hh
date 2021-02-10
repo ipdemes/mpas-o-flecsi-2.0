@@ -22,7 +22,7 @@ init() {
   flog(info) << "Initializing mesh: " << mesh_filename.value() << std::endl;
 
   coloring.allocate(mesh_filename.value());
-  // m.allocate(coloring.get());
+  m.allocate(coloring.get());
 
   return 0;
 } //init_mesh

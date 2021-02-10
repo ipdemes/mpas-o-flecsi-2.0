@@ -19,12 +19,16 @@ namespace mpas {
 struct mesh : flecsi::topo::specialization<flecsi::topo::unstructured, mesh> {
 
   enum index_space { vertices, edges, cells };
-  using index_spaces = has<cells, vertices, edges>;
-  using connectivities = list<from<cells, to<vertices, edges>>>;
+  using index_spaces = has<vertices, edges, cells>;
+  using connectivities = list<from<cells, to<vertices, edges, cells>>,
+                              from<edges, to<vertices, edges, cells>>,
+                              from<vertices, to<edges, cells>>>;
 
   enum entity_list { boundary };
   using entity_lists = list<entity<edges, has<boundary>>>;
 
+  template<auto>
+  static constexpr std::size_t privilege_count = 2;
 
   template<class B>
   struct interface : B {
@@ -54,52 +58,37 @@ struct mesh : flecsi::topo::specialization<flecsi::topo::unstructured, mesh> {
   }; // struct interface
 
 
-#if 0
   struct coloring_policy {
     // primary independent closure token
     using primary =
-      topo::unstructured_impl::primary_independent<index_space::cells,
+      flecsi::topo::unstructured_impl::primary_independent<index_space::cells,
         2 /* dimension */,
         0 /* through dimension */,
         1 /* depth */>;
 
     using auxiliary = std::tuple<
-      topo::unstructured_impl::auxiliary_independent<index_space::vertices,
+      flecsi::topo::unstructured_impl::auxiliary_independent<index_space::vertices,
         0 /* dimension */,
         2 /* primary dimension */>,
-      topo::unstructured_impl::auxiliary_independent<index_space::edges,
+      flecsi::topo::unstructured_impl::auxiliary_independent<index_space::edges,
         1 /* dimension */,
         2 /* primary dimension */>>;
 
     static constexpr size_t auxiliary_colorings =
       std::tuple_size<auxiliary>::value;
-    using definition = topo::unstructured_impl::simple_definition;
-    using communicator = topo::unstructured_impl::mpi_communicator;
+    using definition = io::definition<double>;
   }; // struct coloring_policy
-#endif
 
-  static coloring color(const std::string & fname) {
-    io::definition<double> mpas_def(fname.c_str());
-    const size_t colors{flecsi::processes()};
-    auto [naive, ge, c2v, v2c, c2c] = flecsi::topo::unstructured_impl::make_dcrs(mpas_def, 1);
-    auto raw = flecsi::util::parmetis::color(naive, colors);
-    auto coloring = flecsi::topo::unstructured_impl::distribute(naive, colors, raw);
-#if 0
-    auto closure = topo::unstructured_impl::closure<coloring_policy>(
-      sd, coloring[0], MPI_COMM_WORLD);
 
-    // FIXME: dummy information so that tests pass
-    closure.connectivity_sizes.push_back({10, 10});
-    return closure;
-#endif
-    return {};
-  }
-
+  static coloring color(const std::string & fname);
   static void initialize(flecsi::data::topology_slot<mesh> & s,
-                         const coloring & c) {
-    (void)s;
-    (void)c;
-  } // initialize
+                         const coloring & c);
+
+
+  static void init_cnx(flecsi::field<flecsi::util::id, flecsi::data::ragged>::mutator<flecsi::rw, flecsi::na> e2e,
+                       flecsi::topo::unstructured_impl::crs const & cnx);
+  static void transpose_cnx(flecsi::field<flecsi::util::id, flecsi::data::ragged>::mutator<flecsi::rw, flecsi::na> v2c,
+                            flecsi::field<flecsi::util::id, flecsi::data::ragged>::accessor<flecsi::ro, flecsi::na> c2v);
 
 }; // struct mpas_mesh
 

@@ -122,7 +122,7 @@ make_type_equiv(long double, H5T_NATIVE_LDOUBLE);
  * See
  * https://portal.hdfgroup.org/display/HDF5/H5P_SET_TYPE_CONV_CB
  */
-H5T_conv_ret_t
+inline H5T_conv_ret_t
 handle_conversion_err(H5T_conv_except_t except_type,
   hid_t src_type_id,
   hid_t dst_type_id,
@@ -191,7 +191,7 @@ handle_conversion_err(H5T_conv_except_t except_type,
   return H5T_CONV_ABORT;
 }
 
-hid_t
+inline hid_t
 create_file(const std::string name, unsigned flags, hid_t fapl_id) {
   hid_t file = H5Fcreate(name.c_str(), flags, fapl_id, H5P_DEFAULT);
   if(file < 0) {
@@ -215,7 +215,7 @@ create_file(const std::string name, unsigned flags, hid_t fapl_id) {
  *
  * \return a handle to the open file
  */
-hid_t
+inline hid_t
 open_file(const std::string & name, unsigned flags, hid_t fapl_id) {
   // Note: Third param (fapl_id) is the id for file access props For parallel
   // access, the fapl_id will hold the communicator
@@ -244,7 +244,7 @@ open_file(const std::string & name, unsigned flags, hid_t fapl_id) {
  *
  * \param[in] file Handle to an open file
  */
-void
+inline void
 close_file(hid_t file_id) {
   /* If there are still objects from the given file open, the actual closing of
    * this file is delayed until all of those objects are closed as well.  This
@@ -265,7 +265,7 @@ close_file(hid_t file_id) {
  *
  * \return a handle to the dataset
  */
-hid_t
+inline hid_t
 open_dataset(hid_t loc, const std::string & name) {
   hid_t handle = H5Dopen(loc, name.c_str(), H5P_DEFAULT);
   flog_assert(handle >= 0, "Failed to open dataset: " << name);
@@ -284,7 +284,7 @@ open_dataset(hid_t loc, const std::string & name) {
  * \return a handle to the dataset
  */
 template<class T, unsigned short ND>
-hid_t
+inline hid_t
 create_dataset(hid_t loc,
   std::array<hsize_t, ND> dims,
   const std::string & name) {
@@ -314,7 +314,7 @@ create_dataset(hid_t loc,
  *
  * \param[in] dset_id Handle to an open dataset
  */
-void
+inline void
 close_dataset(hid_t dset_id) {
   if(H5Dclose(dset_id) < 0) {
     flog_fatal("Closing dataset with handle " << dset_id << " failed!");
@@ -332,7 +332,7 @@ close_dataset(hid_t dset_id) {
  *
  * \return a handle to the copied dataspace
  */
-hid_t
+inline hid_t
 get_space(hid_t dset_id) {
   hid_t handle = H5Dget_space(dset_id);
 
@@ -351,7 +351,7 @@ get_space(hid_t dset_id) {
  *
  * \param[in] dspace_id Handle to an open dataspace
  */
-void
+inline void
 close_dataspace(hid_t dspace_id) {
   if(H5Sclose(dspace_id) < 0) {
     flog_fatal("Closing dataspace with handle " << dspace_id << " failed!");
@@ -366,7 +366,7 @@ close_dataspace(hid_t dspace_id) {
  *
  * \param[in] expect_class expected class of data
  */
-void
+inline void
 assert_dataset_typeclass(hid_t dset, H5T_class_t expect_class) {
   hid_t dtype_id = H5Dget_type(dset);
   H5T_class_t real_class = H5Tget_class(dtype_id);
@@ -384,7 +384,7 @@ assert_dataset_typeclass(hid_t dset, H5T_class_t expect_class) {
  *
  * \param[in] expect_type handle to hid_t of expected type of data
  */
-void
+inline void
 assert_dataset_type(hid_t dset, hid_t expect_type) {
   hid_t dtype_id = H5Dget_type(dset);
 
@@ -412,7 +412,7 @@ assert_dataset_type(hid_t dset, hid_t expect_type) {
  *
  *  \return the rank of the dataset (number of dimensions)
  */
-int
+inline int
 get_rank(hid_t dset_id) {
   hid_t space = get_space(dset_id);
   int rank = H5Sget_simple_extent_ndims(space);
@@ -436,7 +436,7 @@ get_rank(hid_t dset_id) {
  *
  * \return the number of dimesions (rank) of the dataset
  */
-int
+inline int
 get_simple_dims(hid_t dset_id, hsize_t * dims) {
   hid_t space = get_space(dset_id);
   int rank = H5Sget_simple_extent_dims(space, dims, NULL);
@@ -451,7 +451,7 @@ get_simple_dims(hid_t dset_id, hsize_t * dims) {
  *
  */
 
-hid_t
+inline hid_t
 create_plist(hid_t plist_type) {
   hid_t plist = H5Pcreate(plist_type);
   flog_assert(plist >= 0, "Failed to create property list");
@@ -469,7 +469,7 @@ create_plist(hid_t plist_type) {
  *
  * \return number of entities read  */
 template<typename T>
-size_t
+inline size_t
 read_dataset_1D(hid_t file_handle,
   const std::string & dset_name,
   std::vector<T> & data) {
@@ -514,7 +514,7 @@ read_dataset_1D(hid_t file_handle,
  * returned) \return stride for first dimension
  */
 template<typename T>
-size_t
+inline size_t
 read_dataset_2D(hid_t file_handle,
   const std::string & dset_name,
   std::vector<T> & data) {
@@ -558,7 +558,7 @@ read_dataset_2D(hid_t file_handle,
  *
  */
 template<typename T>
-size_t
+inline size_t
 read_connectivity_2D(hid_t file_handle,
                      const std::string & dset_name,
                      detail::crs & data,
@@ -613,7 +613,7 @@ read_connectivity_2D(hid_t file_handle,
 }
 
 template<typename T>
-size_t
+inline size_t
 read_connectivity_2D(hid_t file_handle,
                      const std::string & dset_name,
                      detail::crs & data,
@@ -668,7 +668,7 @@ read_connectivity_2D(hid_t file_handle,
 }
 
 template<typename T>
-size_t
+inline size_t
 read_connectivity_2D(hid_t file_handle,
                      const std::string & dset_name,
                      detail::crs & data) {
@@ -718,7 +718,7 @@ read_connectivity_2D(hid_t file_handle,
 }
 
 template<typename T>
-size_t
+inline size_t
 read_entity_to_entity(hid_t file_handle,
                       const std::string & dset_name,
                       detail::crs & data,
@@ -773,7 +773,7 @@ read_entity_to_entity(hid_t file_handle,
 }
 
 template<typename T>
-size_t
+inline size_t
 read_entity_to_entity(hid_t file_handle,
                       const std::string & dset_name,
                       detail::crs & data) {
@@ -834,7 +834,7 @@ read_entity_to_entity(hid_t file_handle,
  * returned) \return stride for first dimension
  */
 template<typename T>
-size_t
+inline size_t
 read_connectivity_v_2D(hid_t file_handle,
   const std::string & dset_name,
   std::vector<T> & data) {
@@ -968,7 +968,7 @@ read_coordinates(hid_t file,
   return xsize;
 } // read_coordinates
 
-void
+inline void
 dump_connectivity(detail::crs & connectivity) {
   #if 0
   int rank;
@@ -1055,9 +1055,6 @@ public:
   // of \e name.
   //============================================================================
   void read_entities(const std::string & filename) {
-    int comm_size, comm_rank;
-    MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
-    MPI_Comm_rank(MPI_COMM_WORLD, &comm_rank);
     size_t cell_min, cell_max;
 
     // store input file information
@@ -1078,34 +1075,7 @@ public:
       const std::string yCell_str("yCell");
       std::vector<real_t> cells_all;
       num_cells_ =
-        detail::read_coordinates(file_handle, xCell_str, yCell_str, cells_all);
-
-      flecsi::util::color_map cm(comm_size, comm_size, num_cells_);
-      const auto & cell_partitioning = cm.distribution();
-      cell_min = cell_partitioning[comm_rank];
-      cell_max = cell_partitioning[comm_rank + 1] - 1;
-      num_cells_ = cell_max - cell_min + 1;
-
-      cells_.resize(num_cells_);
-      std::copy(cells_all.begin() + cell_min, cells_all.begin() + cell_max + 1,
-        cells_.begin());
-
-      // create the local to global cell mapping
-      auto & cell_local2global_ = local_to_global_[2]; // cells=2
-
-      cell_local2global_.clear();
-      cell_local2global_.resize(num_cells_);
-      for(size_t i = 0; i < num_cells_; ++i) {
-        cell_local2global_[i] = cell_min + i;
-      }
-
-      // invert the global id to local id map
-      auto & cell_global2local_ = global_to_local_[2];
-      for(size_t i = 0; i < num_cells_; ++i) {
-        auto global_id = cell_local2global_[i];
-        cell_global2local_.emplace(std::make_pair(global_id, i));
-      }
-
+        detail::read_coordinates(file_handle, xCell_str, yCell_str, cells_);
     } // scope
 
     std::vector<real_t> coordinates;
@@ -1113,79 +1083,27 @@ public:
       const std::string x_dataset_name("xVertex");
       const std::string y_dataset_name("yVertex");
       num_vertices_ = detail::read_coordinates(
-        file_handle, x_dataset_name, y_dataset_name, coordinates);
+        file_handle, x_dataset_name, y_dataset_name, vertices_);
       num_vertices_ = num_vertices_ / dimension();
 
       // read connectivity info
       const std::string verticesOnCell_str{"verticesOnCell"};
       const std::string edgesOnCell_str{"edgesOnCell"};
+      const std::string cellsOnCell_str{"cellsOnCell"};
+      const std::string verticesOnEdge_str{"verticesOnEdge"};
+      const std::string edgesOnEdge_str{"edgesOnEdge"};
       h5::read_connectivity_2D<size_t>(file_handle, verticesOnCell_str,
-        local_connectivity_[2][0], cell_min, cell_max);
-
+                                       local_connectivity_[2][0]);
       h5::read_connectivity_2D<size_t>(file_handle, edgesOnCell_str,
-        local_connectivity_[2][1], cell_min, cell_max);
+                                       local_connectivity_[2][1]);
+      h5::read_connectivity_2D<size_t>(file_handle, cellsOnCell_str,
+                                       local_connectivity_[2][2]);
+      h5::read_connectivity_2D<size_t>(file_handle, verticesOnEdge_str,
+                                       local_connectivity_[1][0]);
+      h5::read_connectivity_2D<size_t>(file_handle, edgesOnEdge_str,
+                                       local_connectivity_[1][1]);
     } // scope
 
-    // vertices
-    {
-      // get the vertex maps
-      auto & vertex_global2local_ = global_to_local_[0];
-      auto & vertex_local2global_ = local_to_global_[0];
-
-      auto & cell2vertices_ = local_connectivity_[2][0];
-
-      flog_assert(
-        cell2vertices_.size() == num_cells_, "Mismatch in read blocks");
-
-      std::set<size_t> global_vert;
-
-      for(size_t i = 0; i < num_cells_; ++i) {
-        for(auto j = cell2vertices_.offsets[i];
-            j < cell2vertices_.offsets[i + 1]; ++j) {
-          auto global_id = cell2vertices_.indices[j];
-          global_vert.insert(global_id);
-        }
-      }
-
-      size_t local_vertices{0};
-      vertex_global2local_.clear();
-      vertex_local2global_.clear();
-      for(auto gid : global_vert) {
-        vertex_global2local_[gid] = local_vertices;
-        vertex_local2global_.push_back(gid);
-        local_vertices++;
-      }
-
-      // convert element conectivity to local ids and extract only coordinates
-      // that are needed
-      size_t num_dims = dimension();
-      vertices_.clear();
-      vertices_.resize(local_vertices * num_dims);
-
-      for(auto & v : cell2vertices_.indices) {
-        auto global_id = v;
-        v = vertex_global2local_.at(global_id);
-        for(int d = 0; d < num_dims; ++d) {
-          vertices_[v * num_dims + d] =
-            coordinates[d * num_vertices_ + global_id];
-        }
-      }
-
-#if 0
-      const std::string edgesOnVertex_str{"edgesOnVertex"};
-      const std::string cellsOnVertex_str{"cellsOnVertex"};
-      h5::read_connectivity_2D<size_t>( 
-        file_handle, edgesOnVertex_str, local_connectivity_[0][1], vertex_local2global_);
-      h5::read_connectivity_2D<size_t>( 
-        file_handle, cellsOnVertex_str, local_connectivity_[0][2], vertex_local2global_);
-#endif
-
-    } // scope
-
-    // other connectivities should be read after partitioning and mesh migration
-    // are done
-
-    // should be done with this?
     h5::close_file(file_handle);
   }
 
@@ -1198,7 +1116,9 @@ public:
       case 0: {
         return vertices_.size() / dimension();
       }
-      case 1:
+    case 1: {
+      return local_connectivity_.at(dim).at(0).size();
+    }
       case 2: {
         return local_connectivity_.at(dim).at(0).size();
       }
@@ -1209,13 +1129,6 @@ public:
     }
   }
 
-  const std::vector<size_t> & local_to_global(size_t dim) const  {
-    return local_to_global_.at(dim);
-  }
-
-  const std::map<size_t, size_t> & global_to_local(size_t dim) const  {
-    return global_to_local_.at(dim);
-  }
 
   /// Return the set of vertices of a particular entity.
   /// \param [in] dimension  The entity dimension to query.
@@ -1227,9 +1140,9 @@ public:
     return empty_connectivity_;
   }
 
-  // const crs_t & entities_crs(size_t from_dim, size_t to_dim) const  {
-  //   return local_connectivity_.at(from_dim).at(to_dim);
-  // }
+  const crs_t & entities_crs(size_t from_dim, size_t to_dim) const  {
+    return local_connectivity_.at(from_dim).at(to_dim);
+  }
 
   /// return the set of vertices of a particular entity.
   /// \param [in] dimension  the entity dimension to query.
@@ -1269,128 +1182,6 @@ public:
   } // vertex
 
 
-#if 0
-  void build_connectivity()  {
-
-    //--------------------------------------------------------------------------
-    // build the edges
-    // reference storage for the cell edges and edge vertices
-    const auto & cells2vertices = local_connectivity_.at(2).at(0);
-    auto & cells2edges = local_connectivity_[2][1];
-    auto & edges2vertices = local_connectivity_[1][0];
-    auto & vertices2cells = local_connectivity_[0][2];
-
-    auto & vert_local2global = local_to_global_[0];
-    auto & vert_global2local = global_to_local_[0];
-    auto & edge_local2global = local_to_global_[1];
-    auto & edge_global2local = global_to_local_[1];
-    auto & cell_local2global = local_to_global_[2];
-    auto & cell_global2local = global_to_local_[2];
-
-    hid_t file_handle =
-      h5::open_file(filename_.c_str(), H5F_ACC_RDONLY, H5P_DEFAULT);
-
-    const std::string verticesOnEdge_str{"verticesOnEdge"};
-    const std::string edgesOnEdge_str{"edgesOnEdge"};
-    const std::string edgesOnCell_str{"edgesOnCell"};
-    const std::string cellsOnCell_str{"cellsOnCell"};
-    const std::string cellsOnVertex_str{"cellsOnVertex"};
-
-    h5::read_connectivity_2D<size_t>(file_handle, edgesOnCell_str,
-      local_connectivity_[2][1], local_to_global_[2]);
-
-    // computing edge local_to_global and reverse
-    {
-      std::set<size_t> global_edges;
-
-      for(size_t i = 0; i < cells2edges.size(); ++i) {
-        for(auto j = cells2edges.offsets[i]; j < cells2edges.offsets[i + 1];
-            ++j) {
-          auto global_id = cells2edges.indices[j];
-          global_edges.insert(global_id);
-        }
-      }
-
-      size_t local_edges{0};
-      edge_global2local.clear();
-      edge_local2global.clear();
-      for(auto gid : global_edges) {
-        edge_global2local[gid] = local_edges;
-        edge_local2global.push_back(gid);
-        local_edges++;
-      }
-
-      // convert connectivity to use local ids:
-      for(size_t i = 0; i < cells2edges.size(); ++i) {
-        for(auto j = cells2edges.offsets[i]; j < cells2edges.offsets[i + 1];
-            ++j) {
-          auto global_id = cells2edges.indices[j];
-          auto lid = edge_global2local[global_id];
-          cells2edges.indices[j] = lid;
-        }
-      }
-
-    } // edges
-
-    // reading vertices on edge
-    h5::read_connectivity_2D<size_t>(file_handle, verticesOnEdge_str,
-      local_connectivity_[1][0], edge_local2global);
-
-    // convert connectivity to use local ids:
-    for(size_t i = 0; i < edges2vertices.size(); i++) {
-      for(auto j = edges2vertices.offsets[i]; j < edges2vertices.offsets[i + 1];
-          ++j) {
-        auto gid = edges2vertices.indices[j];
-        auto lid = vert_global2local[gid];
-        edges2vertices.indices[j] = lid;
-      }
-    }
-
-    h5::read_entity_to_entity<size_t>(file_handle, edgesOnEdge_str,
-      local_connectivity_[1][1], edge_local2global);
-
-    // convert connectivity to use local ids:
-    for(size_t i = 0; i < local_connectivity_[1][1].size(); i++) {
-      for(auto j = local_connectivity_[1][1].offsets[i];
-          j < local_connectivity_[1][1].offsets[i + 1]; ++j) {
-        auto gid = local_connectivity_[1][1].indices[j];
-        auto lid = edge_global2local[gid];
-        local_connectivity_[1][1].indices[j] = lid;
-      }
-    }
-
-    h5::read_entity_to_entity<size_t>(file_handle, cellsOnCell_str,
-      local_connectivity_[2][2], cell_local2global);
-    // convert connectivity to use local ids:
-    for(size_t i = 0; i < local_connectivity_[2][2].size(); i++) {
-      for(auto j = local_connectivity_[2][2].offsets[i];
-          j < local_connectivity_[2][2].offsets[i + 1]; ++j) {
-        auto gid = local_connectivity_[2][2].indices[j];
-        auto lid = cell_global2local[gid];
-        local_connectivity_[2][2].indices[j] = lid;
-      }
-    }
-
-   // reading cells on vertex
-    h5::read_connectivity_2D<size_t>(file_handle, cellsOnVertex_str,
-      local_connectivity_[0][2], vert_local2global);
-
-    // convert connectivity to use local ids:
-    for(size_t i = 0; i < vertices2cells.size(); i++) {
-      for(auto j = vertices2cells.offsets[i];
-         j < vertices2cells.offsets[i + 1];
-          ++j) {
-        auto gid = vertices2cells.indices[j];
-        auto lid = cell_global2local[gid];
-        vertices2cells.indices[j] = lid;
-      }
-    }
-
-
-    h5::close_file(file_handle);
-  }
-#endif
-
 private:
   //============================================================================
   // Private data
@@ -1405,11 +1196,6 @@ private:
 
   //! \brief storage for vertex coordinates
   vector<real_t> vertices_;
-
-  //--------------------------------------------------------------------------
-  //! \brief global/local id maps
-  std::map<index_t, std::map<index_t, index_t>> global_to_local_;
-  std::map<index_t, vector<index_t>> local_to_global_;
 
   //! regions
   std::vector<index_t> cell_block_id_;
