@@ -5,6 +5,26 @@ namespace mpas {
 
 using namespace flecsi;
 
+namespace detail {
+template<class Policy, class Definition, class T, std::size_t... II>
+void init(Definition & md, T & idx_colorings, std::index_sequence<II...>)
+{
+  auto make_space = [](std::size_t ne, auto & col) {
+    col.owned.reserve(ne);
+    col.exclusive.reserve(ne);
+    for (std::size_t i = 0; i < ne; ++i) {
+      col.owned.push_back(i);
+      col.exclusive.push_back(i);
+    }
+  };
+
+  (make_space(md.num_entities(std::tuple_element<II,
+                              typename Policy::auxiliary>::type::dimension),
+              idx_colorings[std::tuple_element<II,
+                            typename Policy::auxiliary>::type::index_space]), ...);
+}
+}
+
 mesh::coloring mesh::color(const std::string & fname)
 {
     io::definition<double> mpas_def(fname.c_str());
@@ -18,6 +38,8 @@ mesh::coloring mesh::color(const std::string & fname)
     {
       auto & curr = closure[process()];
       curr.colors = 1;
+      detail::init<coloring_policy>(mpas_def, curr.idx_colorings,
+                                    std::make_index_sequence<coloring_policy::auxiliary_colorings>());
       curr.cnx_allocs.push_back(
         {mpas_def.entities_crs(2, 0).indices.size(),
          mpas_def.entities_crs(2, 1).indices.size(),
