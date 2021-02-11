@@ -62,8 +62,11 @@ int read_fields()
 
 int init_testcase()
 {
-  execute<task::setup_case_1>(m, dvEdge(m), latCell(m), lonCell(m),
-                              latVertex(m), lonVertex(m), u(m), h(m));
+  auto tc_num = test_case.value();
+  if (tc_num == 1) {
+    execute<task::setup_case_1>(m, dvEdge(m), latCell(m), lonCell(m),
+                                latVertex(m), lonVertex(m), u(m), h(m));
+  }
   return 0;
 }
 
