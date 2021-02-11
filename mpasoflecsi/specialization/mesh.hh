@@ -11,6 +11,7 @@
 #include "flecsi/topo/unstructured/interface.hh"
 #include "flecsi/util/parmetis.hh"
 
+#include "mpasoflecsi/common/types.hh"
 #include "definition.hh"
 
 
@@ -46,8 +47,18 @@ struct mesh : flecsi::topo::specialization<flecsi::topo::unstructured, mesh> {
       return B::template entities<index_space::vertices>();
     }
 
+    template<index_space From>
+    auto vertices(flecsi::topo::id<From> from) {
+      return B::template entities<index_space::vertices>(from);
+    }
+
     auto edges() {
       return B::template entities<index_space::edges>();
+    }
+
+    template<index_space From>
+    auto edges(flecsi::topo::id<From> from) {
+      return B::template entities<index_space::edges>(from);
     }
 
     template<entity_list List>
@@ -90,6 +101,28 @@ struct mesh : flecsi::topo::specialization<flecsi::topo::unstructured, mesh> {
   static void transpose_cnx(flecsi::field<flecsi::util::id, flecsi::data::ragged>::mutator<flecsi::rw, flecsi::na> v2c,
                             flecsi::field<flecsi::util::id, flecsi::data::ragged>::accessor<flecsi::ro, flecsi::na> c2v);
 
-}; // struct mpas_mesh
+};
 
-} // namespace poisson
+
+// mesh fields
+inline const flecsi::field<double>::definition<mesh, mesh::cells>    latCell;
+inline const flecsi::field<double>::definition<mesh, mesh::cells>    lonCell;
+inline const flecsi::field<double>::definition<mesh, mesh::vertices> latVertex;
+inline const flecsi::field<double>::definition<mesh, mesh::vertices> lonVertex;
+inline const flecsi::field<double>::definition<mesh, mesh::edges>    latEdge;
+inline const flecsi::field<double>::definition<mesh, mesh::edges>    lonEdge;
+inline const flecsi::field<double>::definition<mesh, mesh::cells>    xCell;
+inline const flecsi::field<double>::definition<mesh, mesh::cells>    yCell;
+inline const flecsi::field<double>::definition<mesh, mesh::cells>    zCell;
+inline const flecsi::field<double>::definition<mesh, mesh::cells>    meshDensity;
+inline const flecsi::field<double>::definition<mesh, mesh::edges>    dvEdge;
+inline const flecsi::field<double>::definition<mesh, mesh::edges>    dcEdge;
+inline const flecsi::field<double>::definition<mesh, mesh::vertices> areaTriangle;
+inline const flecsi::field<double>::definition<mesh, mesh::cells>    areaCell;
+inline const flecsi::field<double>::definition<mesh, mesh::vertices> fVertex;
+inline const flecsi::field<double>::definition<mesh, mesh::cells>    bottomDepth;
+
+inline const flecsi::field<vdtensor<int>>::definition<mesh, mesh::vertices> kiteAreasOnVertex;
+inline const flecsi::field<metensor<double>>::definition<mesh, mesh::edges> weightsOnEdge;
+
+}
