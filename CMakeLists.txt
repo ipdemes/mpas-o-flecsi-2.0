@@ -60,7 +60,7 @@ list (APPEND MPAS_LIBRARY_DEPENDENCIES ${FleCSI_LIBRARIES} ${FleCSI_LIBRARY_DEPE
 # Find the Kokkos installation.
 #------------------------------------------------------------------------------#
 
-#find_package(Kokkos REQUIRED)
+find_package(Kokkos REQUIRED)
 
 #------------------------------------------------------------------------------#
 # HDF5
