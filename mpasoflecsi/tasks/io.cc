@@ -11,23 +11,23 @@ using namespace flecsi;
 
 void read_mesh_fields(mesh::accessor<ro, ro> m,
                       hid_t file,
-                      io_acc<double> latCell,
-                      io_acc<double> lonCell,
-                      io_acc<double> latVertex,
-                      io_acc<double> lonVertex,
-                      io_acc<double> latEdge,
-                      io_acc<double> lonEdge,
-                      io_acc<double> xCell,
-                      io_acc<double> yCell,
-                      io_acc<double> zCell,
-                      io_acc<double> areaCell,
-                      io_acc<double> areaTriangle,
-                      io_acc<vdtensor<int>> kiteAreasOnVertex,
-                      io_acc<double> dvEdge,
-                      io_acc<double> dcEdge,
-                      io_acc<double> meshDensity,
-                      io_acc<double> fVertex,
-                      io_acc<metensor<double>> weightsOnEdge)
+                      io::acc<double> latCell,
+                      io::acc<double> lonCell,
+                      io::acc<double> latVertex,
+                      io::acc<double> lonVertex,
+                      io::acc<double> latEdge,
+                      io::acc<double> lonEdge,
+                      io::acc<double> xCell,
+                      io::acc<double> yCell,
+                      io::acc<double> zCell,
+                      io::acc<double> areaCell,
+                      io::acc<double> areaTriangle,
+                      io::acc<vdtensor<int>> kiteAreasOnVertex,
+                      io::acc<double> dvEdge,
+                      io::acc<double> dcEdge,
+                      io::acc<double> meshDensity,
+                      io::acc<double> fVertex,
+                      io::acc<metensor<double>> weightsOnEdge)
 {
   using namespace mpas::io;
 
@@ -51,6 +51,12 @@ void read_mesh_fields(mesh::accessor<ro, ro> m,
     reader.read<vert_space>("lonVertex", lonVertex, m);
     reader.read<vert_space>("latEdge", latEdge, m);
     reader.read<vert_space>("lonEdge", lonEdge, m);
+  }
+
+  { // read 2D float datasets
+    helper2d<double> reader(file);
+    reader.read<edge_space>("weightsOnEdge", weightsOnEdge, m);
+    reader.read<vert_space>("kiteAreasOnVertex", kiteAreasOnVertex, m);
   }
 }
 
