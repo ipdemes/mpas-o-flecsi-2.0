@@ -41,10 +41,10 @@ class Flecsi(CMakePackage):
     variant('graphviz', default=False,
             description='Enable GraphViz Support')
 
-    variant('hdf5', default=False,
+    variant('hdf5', default=True,
             description='Enable HDF5 Support')
 
-    variant('kokkos', default=False,
+    variant('kokkos', default=True,
             description='Enable Kokkos Support')
 
     variant('openmp', default=False,
