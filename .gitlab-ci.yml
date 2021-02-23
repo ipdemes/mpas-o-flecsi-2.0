@@ -52,7 +52,6 @@ mpich-legion-gnu:
     CXX_FLAGS: -Wall -W -Werror -Wno-parentheses
     C_COMPILER: gcc
     C_FLAGS: ${CXX_FLAGS}
-    CMAKE_OPTIONS:
 
 mpich-legion-gnu:release:
   extends: .build_template
@@ -69,7 +68,6 @@ mpich-legion-gnu:release:
     CXX_FLAGS: -Wall -W -Werror -Wno-parentheses
     C_COMPILER: gcc
     C_FLAGS: ${CXX_FLAGS}
-    CMAKE_OPTIONS: 
 
 #------------------------------------------------------------------------------#
 # Build and unit tests for MPI runtime with MPICH provider,
@@ -93,7 +91,6 @@ mpich-mpi-gnu:
     CXX_FLAGS: -Wall -W -Werror -Wno-parentheses
     C_COMPILER: gcc
     C_FLAGS: ${CXX_FLAGS}
-    CMAKE_OPTIONS: 
 
 mpich-mpi-gnu:release:
   extends: .build_template
@@ -110,7 +107,6 @@ mpich-mpi-gnu:release:
     CXX_FLAGS: -Wall -W -Werror -Wno-parentheses
     C_COMPILER: gcc
     C_FLAGS: ${CXX_FLAGS}
-    CMAKE_OPTIONS: 
 
 #------------------------------------------------------------------------------#
 # Build and unit tests for Legion runtime with OpenMPI provider,
@@ -134,7 +130,6 @@ openmpi-legion-gnu:
     CXX_FLAGS: -Wall -W -Werror -Wno-parentheses
     C_COMPILER: gcc
     C_FLAGS: ${CXX_FLAGS}
-    CMAKE_OPTIONS: 
 
 openmpi-legion-gnu:release:
   extends: .build_template
@@ -151,7 +146,6 @@ openmpi-legion-gnu:release:
     CXX_FLAGS: -Wall -W -Werror -Wno-parentheses
     C_COMPILER: gcc
     C_FLAGS: ${CXX_FLAGS}
-    CMAKE_OPTIONS:
 
 #------------------------------------------------------------------------------#
 # Build and unit tests for MPI runtime with OpenMPI provider,
@@ -175,7 +169,6 @@ openmpi-mpi-gnu:
     CXX_FLAGS: -Wall -W -Werror -Wno-parentheses
     C_COMPILER: gcc
     C_FLAGS: ${CXX_FLAGS}
-    CMAKE_OPTIONS: 
 
 openmpi-mpi-gnu:release:
   extends: .build_template
@@ -192,7 +185,6 @@ openmpi-mpi-gnu:release:
     CXX_FLAGS: -Wall -W -Werror -Wno-parentheses
     C_COMPILER: gcc
     C_FLAGS: ${CXX_FLAGS}
-    CMAKE_OPTIONS: 
 
 #------------------------------------------------------------------------------#
 # Build and unit tests for Legion runtime with MPICH provider,
@@ -216,7 +208,6 @@ mpich-legion-clang:
     CXX_FLAGS: -fcolor-diagnostics -Wall -W -Werror -Wno-parentheses
     C_COMPILER: clang
     C_FLAGS: ${CXX_FLAGS}
-    CMAKE_OPTIONS: 
 
 #------------------------------------------------------------------------------#
 # Build and unit tests for MPI runtime with MPICH provider,
@@ -240,4 +231,3 @@ mpich-mpi-clang:
     CXX_FLAGS: -fcolor-diagnostics -Wall -W -Werror -Wno-parentheses
     C_COMPILER: clang
     C_FLAGS: ${CXX_FLAGS}
-    CMAKE_OPTIONS: 
