@@ -12,10 +12,10 @@ using namespace flecsi;
 
 namespace coupler {
 
-inline const field<double>::definition<cartmesh, cartmesh::cells> u;
-inline const field<double>::definition<cartmesh, cartmesh::cells> v;
+inline const field<double>::definition<cartmesh, cartmesh::cells> ud;
+inline const field<double>::definition<cartmesh, cartmesh::cells> vd;
 
 inline cartmesh::slot m;
 inline cartmesh::cslot coloring;
 
-} // namespace poisson
+} // namespace coupler

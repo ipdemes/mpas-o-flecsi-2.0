@@ -11,8 +11,8 @@ namespace coupler {
 namespace task {
 
 void copy_fields(cartmesh::accessor<ro> m,
-  field<double>::accessor<rw, ro> ua,
-  field<double>::accessor<ro, ro> va); 
+  field<double>::accessor<ro, ro> ua,
+  field<double>::accessor<wo, ro> va); 
 
 } // namespace task
 } // namespace coupler

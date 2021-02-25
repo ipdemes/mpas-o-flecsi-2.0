@@ -8,8 +8,8 @@
 using namespace flecsi; 
 
 void coupler::task::copy_fields(cartmesh::accessor<ro> m,
-  field<double>::accessor<rw, ro> ua,
-  field<double>::accessor<ro, ro> va) {
+  field<double>::accessor<ro, ro> ua,
+  field<double>::accessor<wo, ro> va) {
 
   auto u = m.mdspan<cartmesh::cells>(ua);
   auto v = m.mdspan<cartmesh::cells>(va);

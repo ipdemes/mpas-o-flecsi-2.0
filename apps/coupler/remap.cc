@@ -14,6 +14,6 @@ using namespace flecsi;
 
 int
 coupler::action::remap() {
-  execute<task::copy_fields>(m, u(m), v(mm));
+  execute<task::copy_fields>(m, ud(m), vd(m));
   return 0;
 } // remap
