@@ -5,7 +5,8 @@
 
 #pragma once
 
-#include "specialization/cartmesh.hh"
+#include "state.hh"
+#include "mpasoflecsi/specialization/cartmesh.hh"
 
 namespace coupler {
 namespace task {

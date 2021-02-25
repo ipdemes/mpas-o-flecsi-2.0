@@ -12,6 +12,7 @@ add_executable(coupler
   initialize.cc
   finalize.cc
   remap.cc
+  tasks/copy_fields.cc
 )
 
 #------------------------------------------------------------------------------#

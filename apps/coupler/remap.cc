@@ -8,7 +8,7 @@
 #include "state.hh"
 #include "tasks/copy_fields.hh"
 
-#include <flecsi/flog.hh>
+#include <flecsi/execution.hh>
 
 using namespace flecsi;
 

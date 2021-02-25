@@ -3,6 +3,7 @@
   All rights reserved
  *----------------------------------------------------------------------------*/
 
+//#include "include/tasks/copy_fields.hh"
 #include "tasks/copy_fields.hh"
 
 using namespace flecsi; 
@@ -15,8 +16,8 @@ void coupler::task::copy_fields(cartmesh::accessor<ro> m,
   auto v = m.mdspan<cartmesh::cells>(va);
   const auto dsqr = pow(m.delta(), 2);
 
-  for(auto j : m.cells<mesh::y_axis>()) {
-    for(auto i : m.cells<mesh::x_axis>()) {
+  for(auto j : m.cells<cartmesh::y_axis>()) {
+    for(auto i : m.cells<cartmesh::x_axis>()) {
           v[j][i] = u[j][i]; 
     } // for
   } // for

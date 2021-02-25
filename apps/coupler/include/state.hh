@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "specialization/cartmesh.hh"
+#include "mpasoflecsi/specialization/cartmesh.hh"
 
 using namespace mpas; 
 using namespace flecsi; 
