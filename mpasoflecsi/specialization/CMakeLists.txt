@@ -4,6 +4,7 @@
 #------------------------------------------------------------------------------#
 
 set(specialization_HEADERS
+  cartmesh.hh
   control.hh
   mesh.hh)
 
