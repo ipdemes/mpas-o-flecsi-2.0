@@ -27,7 +27,7 @@ void read_mesh_fields(mesh::accessor<ro, ro> m,
                       io::acc<double> dcEdge,
                       io::acc<double> meshDensity,
                       io::acc<double> fVertex,
-                      io::acc<metensor<double>> weightsOnEdge)
+                      io::acc<me2tensor<double>> weightsOnEdge)
 {
   using namespace mpas::io;
 

@@ -29,9 +29,9 @@ namespace action {
 
 int init_mesh()
 {
-  flog(info) << "Initializing mesh: " << mesh_filename.value() << std::endl;
+  flog(info) << "Initializing mesh: " << inputs::meshfile.value() << std::endl;
 
-  coloring.allocate(mesh_filename.value());
+  coloring.allocate(inputs::meshfile.value());
   m.allocate(coloring.get());
 
   return 0;
@@ -44,7 +44,7 @@ int read_fields()
 
   using namespace io::h5;
 
-  hid_t file = open_file(mesh_filename.value(), H5F_ACC_RDONLY, H5P_DEFAULT);
+  hid_t file = open_file(inputs::meshfile.value(), H5F_ACC_RDONLY, H5P_DEFAULT);
 
   execute<mpas::task::read_mesh_fields, mpi>(m, file, latCell(m), lonCell(m),
                                              latVertex(m), lonVertex(m),
@@ -62,11 +62,13 @@ int read_fields()
 
 int init_testcase()
 {
-  auto tc_num = test_case.value();
-  if (tc_num == 1) {
+  switch (inputs::test_case.value()) {
+  case test::case1 :
     execute<task::setup_case_1>(m, dvEdge(m), latCell(m), lonCell(m),
-                                latVertex(m), lonVertex(m), u(m), h(m));
+                                latVertex(m), lonVertex(m), u[curr](m), h[curr](m));
+    break;
   }
+
   return 0;
 }
 

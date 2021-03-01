@@ -8,9 +8,11 @@ include_directories(${PROJECT_SOURCE_DIR})
 # Add an executable.
 #------------------------------------------------------------------------------#
 add_executable(sw
+  run.cc
   initialize.cc
-  sw.cc
   tasks/testcase.cc
+  tasks/solve.cc
+  sw.cc
 )
 
 #------------------------------------------------------------------------------#
