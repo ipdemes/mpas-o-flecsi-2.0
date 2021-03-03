@@ -3,23 +3,31 @@
   All rights reserved
  *----------------------------------------------------------------------------*/
 
-#include "tasks/copy_fields.hh"
+#include "tasks/init_fields.hh"
 
-#include <flecsi/flog.hh>
 using namespace flecsi; 
 
-void coupler::task::copy_fields(cartmesh::accessor<ro> m,
-  field<double>::accessor<ro, ro> ua,
-  field<double>::accessor<wo, ro> va) {
+void coupler::task::init_fields(cartmesh::accessor<ro> m,
+  field<double>::accessor<wo, wo> ua,
+  field<double>::accessor<wo, wo> va) {
 
   auto u = m.mdspan<cartmesh::cells>(ua);
   auto v = m.mdspan<cartmesh::cells>(va);
+  const auto dsqr = pow(m.delta(), 2);
 
+  //init u
   for(auto j : m.cells<cartmesh::y_axis>()) {
     for(auto i : m.cells<cartmesh::x_axis>()) {
-          v[j][i] = u[j][i]; 
+          u[j][i] = dsqr; 
+    } // for
+  } // for
+
+  //init v
+  for(auto j : m.cells<cartmesh::y_axis>()) {
+    for(auto i : m.cells<cartmesh::x_axis>()) {
+          v[j][i] = 0.0; 
     } // for
   } // for
   
-} //copy fields
+} //init fields
 

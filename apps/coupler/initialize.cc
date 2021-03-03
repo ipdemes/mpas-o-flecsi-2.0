@@ -16,6 +16,9 @@ int coupler::action::init_mesh() {
              << " mesh" << std::endl;
   flecsi::log::flush();
 
+//  std::cout << "Initializing " << x_extents.value() << "x" << y_extents.value()
+//             << " mesh" << std::endl;
+
   std::vector<std::size_t> axis_extents{x_extents.value(), y_extents.value()};
 
   // Distribute the number of processes over the axis colors.
