@@ -41,7 +41,8 @@ inline flecsi::program_option<std::string>
 meshfile("mesh-file", "Filename for the mesh file.", 1);
 
 inline flecsi::program_option<test>
-test_case("Problem", "testcase,t", "Test case to run [1,5].");
+test_case("Problem", "testcase,t", "Test case to run [1,5].",
+          {{flecsi::option_default, test::case1}});
 
 inline flecsi::program_option<std::size_t>
 nsteps("Timesteps", "nsteps,s", "Number of timesteps to run.",
