@@ -25,8 +25,9 @@ struct mesh : flecsi::topo::specialization<flecsi::topo::unstructured, mesh> {
                               from<edges, to<vertices, edges, cells>>,
                               from<vertices, to<edges, cells>>>;
 
-  enum entity_list { boundary };
-  using entity_lists = list<entity<edges, has<boundary>>>;
+  enum entity_list { owned, exclusive, shared, ghost, boundary };
+  using entity_lists = list<entity<cells, has<owned, exclusive, shared, ghost>>,
+                            entity<edges, has<owned, boundary>>>;
 
   template<auto>
   static constexpr std::size_t privilege_count = 2;
@@ -36,6 +37,11 @@ struct mesh : flecsi::topo::specialization<flecsi::topo::unstructured, mesh> {
 
     auto cells() {
       return B::template entities<index_space::cells>();
+    }
+
+    template<typename B::subspace_list L>
+    auto cells() {
+      return B::template subspace_entities<index_space::cells, L>();
     }
 
     template<index_space From>
@@ -63,7 +69,7 @@ struct mesh : flecsi::topo::specialization<flecsi::topo::unstructured, mesh> {
 
     template<entity_list List>
     auto edges() {
-      return B::template special_entities<mesh::edges, List>();
+      return B::template special_entities<index_space::edges, List>();
     }
 
   }; // struct interface
@@ -123,6 +129,6 @@ inline const flecsi::field<double>::definition<mesh, mesh::vertices> fVertex;
 inline const flecsi::field<double>::definition<mesh, mesh::cells>    bottomDepth;
 
 inline const flecsi::field<vdtensor<int>>::definition<mesh, mesh::vertices> kiteAreasOnVertex;
-inline const flecsi::field<metensor<double>>::definition<mesh, mesh::edges> weightsOnEdge;
+inline const flecsi::field<me2tensor<double>>::definition<mesh, mesh::edges> weightsOnEdge;
 
 }

@@ -38,6 +38,7 @@ mesh::coloring mesh::color(const std::string & fname)
     {
       auto & curr = closure[process()];
       curr.colors = 1;
+      curr.comm = MPI_COMM_WORLD;
       detail::init<coloring_policy>(mpas_def, curr.idx_colorings,
                                     std::make_index_sequence<coloring_policy::auxiliary_colorings>());
       curr.cnx_allocs.push_back(

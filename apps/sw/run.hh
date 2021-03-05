@@ -9,16 +9,11 @@
 
 #include <flecsi/flog.hh>
 
-namespace mpas {
-namespace action {
+namespace mpas { namespace sw { namespace action {
 
-int
-run() {
+int run();
 
- return 0;
-} //init_mesh
+inline control::action<run, cp::run> run_action;
 
-control::action<run, cp::run> run_action;
+}}}
 
-} // namespace action
-} // namespace mpas
