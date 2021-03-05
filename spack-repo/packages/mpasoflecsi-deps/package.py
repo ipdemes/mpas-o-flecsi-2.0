@@ -26,7 +26,7 @@ class MpasoflecsiDeps(BundlePackage):
             description='Enable HDF5 Support')
     variant('graphviz', default=False,
             description='Enable GraphViz Support')
-    variant('flog', default=False,
+    variant('flog', default=True,
             description='Enable FLOG Logging Utility')
     variant('kokkos', default=True,
             description='Enable Kokkos Support')
@@ -35,14 +35,17 @@ class MpasoflecsiDeps(BundlePackage):
      
 
     for b in ['Debug', 'Release', 'RelWithDebInfo', 'MinSizeRel']:
-        depends_on("flecsi build_type=%s" % b,
+        depends_on("flecsi@patch build_type=%s" % b,
             when="build_type=%s" % b)
     for b in ['serial', 'mpi', 'legion', 'hpx', 'charmpp']:
-        depends_on("flecsi backend=%s" % b,
+        depends_on("flecsi@patch backend=%s" % b,
             when="backend=%s" % b)
     for v in [ 'hdf5',  'graphviz', 'kokkos', 'flog']:
-        depends_on("flecsi +%s" % v, when="+%s" % v)
-        depends_on("flecsi ~%s" % v, when="~%s" % v)
+        depends_on("flecsi@patch +%s" % v, when="+%s" % v)
+        depends_on("flecsi@patch ~%s" % v, when="~%s" % v)
+
+    depends_on("flecsi@patch +patch")
+   
 
     depends_on('cmake@3.12:3.18.4')
     depends_on('hdf5+hl+mpi', when='+hdf5')
