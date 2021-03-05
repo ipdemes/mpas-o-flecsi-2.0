@@ -29,6 +29,11 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif()
 
 #------------------------------------------------------------------------------#
+# enable testing
+#------------------------------------------------------------------------------#
+enable_testing()
+
+#------------------------------------------------------------------------------#
 # Add local module path.
 #------------------------------------------------------------------------------#
 
@@ -69,7 +74,7 @@ find_package(Kokkos REQUIRED)
 find_package(HDF5 COMPONENTS C HL REQUIRED)
 
 include_directories( ${HDF5_INCLUDE_DIRS} )
-list(APPEND MPAS_LIBRARY_DEPENDENCIES ${HDF5_LIBRARIES} )
+list(APPEND MPAS_LIBRARY_DEPENDENCIES ${HDF5_LIBRARIES} ${HDF5_HL_LIBRARIES})
 message( STATUS "IO with HDF5 is enabled" )
 
 
