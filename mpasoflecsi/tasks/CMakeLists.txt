@@ -2,23 +2,25 @@
 # Copyright (c) 2016, Triad National Security, LLC
 # All rights reserved
 #------------------------------------------------------------------------------#
+set(tasks_HEADERS
+  io.hh
+  iohelper.hh)
 
-set(specialization_HEADERS
-  control.hh
-  mesh.hh)
-
-set(specialization_SOURCES
-  mesh.cc)
+set(tasks_SOURCES
+  io.cc)
 
 #------------------------------------------------------------------------------#
 # Export header list to parent scope.
 #------------------------------------------------------------------------------#
 
-set(specialization_HEADERS
-  ${specalization_HEADERS}
+set(tasks_HEADERS
+  ${tasks_HEADERS}
   PARENT_SCOPE
 )
 
-set(specialization_SOURCES
-  ${specialization_SOURCES}
-  PARENT_SCOPE)
+set(tasks_SOURCES
+  ${tasks_SOURCES}
+  PARENT_SCOPE
+)
+
+

@@ -15,7 +15,7 @@ class MpasoflecsiDeps(BundlePackage):
 
     version('master', branch='master', submodules=False, preferred=True)
 
-    variant('build_type', default='Release',
+    variant('build_type', default='RelWithDebInfo',
             values=('Debug', 'Release', 'RelWithDebInfo', 'MinSizeRel'),
             description='The build type to build', multi=False)
     variant('backend', default='legion', values=('serial', 'mpi', 'legion', 'hpx'),
