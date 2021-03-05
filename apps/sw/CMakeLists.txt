@@ -22,3 +22,9 @@ target_link_libraries(sw
   mpasoflecsi
   ${MPAS_LIBRARY_DEPENDENCIES}
 )
+
+set (MPASFLECSI_DATA_DIR "${PROJECT_SOURCE_DIR}/data/")
+add_test(
+  NAME mpasflecsi_sw
+  COMMAND $<TARGET_FILE:sw> ${MPASFLECSI_DATA_DIR}/meshes/Sphere_240QU.nc
+)
