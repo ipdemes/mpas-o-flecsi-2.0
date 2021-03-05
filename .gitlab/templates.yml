@@ -174,7 +174,7 @@
     - *env_permissions
     - *env_spack_restore
     - *env_shell
-    - spack env activate ${ENVIRONMENT}-${MPI_PROVIDER}`
+    - spack env activate ${ENVIRONMENT}-${MPI_PROVIDER}
     - mkdir -p ${CI_PROJECT_DIR}/state/build
     - cd ${CI_PROJECT_DIR}/state/build
     - *print_defaults_build_info
