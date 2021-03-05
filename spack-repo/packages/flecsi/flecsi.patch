@@ -1,0 +1,103 @@
+diff --git a/flecsi/topo/unstructured/coloring_utils.hh b/flecsi/topo/unstructured/coloring_utils.hh
+index e5af173..dcb8933 100644
+--- a/flecsi/topo/unstructured/coloring_utils.hh
++++ b/flecsi/topo/unstructured/coloring_utils.hh
+@@ -445,26 +445,26 @@ closure(Definition const & md,
+       primary.owned.begin(), p.second.begin(), p.second.end());
+ 
+     for(auto e : p.second) {
+-      if(shared.at(p.first).count(e)) {
+-        auto d = dependents.at(e);
+-        primary.shared.emplace_back(
+-          shared_entity{e, {dependents.at(e).begin(), dependents.at(e).end()}});
+-      }
+-      else {
++      // if(shared.at(p.first).count(e)) {
++      //   auto d = dependents.at(e);
++      //   primary.shared.emplace_back(
++      //     shared_entity{e, {dependents.at(e).begin(), dependents.at(e).end()}});
++      // }
++      // else {
+         primary.exclusive.emplace_back(e);
+-      } // if
++      // } // if
+     } // for
+ 
+-    for(auto e : ghosts.at(p.first)) {
+-      primary.ghosts.emplace_back(ghost_entity{e, e2co.at(e)});
+-    } // for
++    // for(auto e : ghosts.at(p.first)) {
++    //   primary.ghosts.emplace_back(ghost_entity{e, e2co.at(e)});
++    // } // for
+ 
+     util::force_unique(primary.owned);
+     util::force_unique(primary.exclusive);
+     util::force_unique(primary.shared);
+     util::force_unique(primary.ghosts);
+ 
+-#if 1
++#if 0
+     std::stringstream ss;
+     ss << "color " << p.first << std::endl;
+     ss << log::container{primary.owned} << std::endl;
+diff --git a/flecsi/topo/unstructured/types.hh b/flecsi/topo/unstructured/types.hh
+index 16b73fb..5773687 100644
+--- a/flecsi/topo/unstructured/types.hh
++++ b/flecsi/topo/unstructured/types.hh
+@@ -202,8 +202,7 @@ struct unstructured_base {
+       src_points,
+     field<util::id>::accessor<wo, na> fmd,
+     MPI_Comm const & comm) {
+-    std::vector<std::size_t> entities;
+-
++#if 0
+     /*
+       Define the entity ordering from coloring. This version uses the
+       mesh ordering, i.e., the entities are sorted by ascending mesh id.
+@@ -213,7 +212,6 @@ struct unstructured_base {
+       entities.push_back(e);
+     } // for
+ 
+-    auto [rank, size] = util::mpi::info(comm);
+ 
+     std::vector<std::vector<std::size_t>> requests(size);
+     for(auto e : ic.ghosts) {
+@@ -342,9 +340,13 @@ struct unstructured_base {
+     /*
+       Gather global interval sizes.
+      */
+-
+-    num_intervals = util::mpi::all_gather(
+-      [&local_itvls](int, int) { return local_itvls; }, comm);
++#endif
++    (void) ic;
++    (void) intervals;
++    (void) src_points;
++    (void) fmd;
++    (void) comm;
++    num_intervals = {{0}};
+   } // idx_itvls
+ 
+   static void set_dests(field<data::intervals::Value>::accessor<wo> a,
+diff --git a/flecsi/util/parmetis.hh b/flecsi/util/parmetis.hh
+index f288e1a..df63423 100644
+--- a/flecsi/util/parmetis.hh
++++ b/flecsi/util/parmetis.hh
+@@ -63,6 +63,7 @@ color(dcrs const & naive, idx_t colors, MPI_Comm comm = MPI_COMM_WORLD) {
+     } // for
+   } // if
+ 
++  #if 0
+   // FIXME: Remove or guard
+   std::stringstream ss;
+   ss << "part size: " << part.size() << std::endl;
+@@ -71,6 +72,7 @@ color(dcrs const & naive, idx_t colors, MPI_Comm comm = MPI_COMM_WORLD) {
+   }
+   ss << std::endl;
+   flog_devel(info) << ss.str() << std::endl;
++  #endif
+ 
+   std::vector<idx_t> vtxdist = as<idx_t>(naive.distribution);
+   std::vector<idx_t> xadj = as<idx_t>(naive.offsets);
+
+
