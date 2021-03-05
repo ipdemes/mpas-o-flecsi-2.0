@@ -15,7 +15,7 @@
 
 .env_permissions:
   script: &env_permissions
-    - sudo chown -R mpas.mpas-o-flecsi-2.0 ${CI_PROJECT_DIR}
+    - sudo chown -R flecsi  ${CI_PROJECT_DIR}
 
 #------------------------------------------------------------------------------#
 # env_shell
@@ -37,7 +37,7 @@
 .env_spack_archive:
   script: &env_spack_archive
     - mkdir -p ${CI_PROJECT_DIR}/state
-    - rsync -apz /home/mpas-o-flecsi-2.0/.spack ${CI_PROJECT_DIR}/state
+    - rsync -apz /home/flecsi/.spack ${CI_PROJECT_DIR}/state
 
 #------------------------------------------------------------------------------#
 # env_spack_restore
@@ -47,7 +47,7 @@
 
 .env_spack_restore:
   script: &env_spack_restore
-    - rsync -apz ${CI_PROJECT_DIR}/state/.spack /home/mpas-o-flecsi-2.0
+    - rsync -apz ${CI_PROJECT_DIR}/state/.spack /home/flecsi
 
 #------------------------------------------------------------------------------#
 # env_template
@@ -122,21 +122,25 @@
     - *env_spack_restore
     - *env_shell
     - spack env activate ${ENVIRONMENT}-${MPI_PROVIDER}
+    - mkdir -p ${CI_PROJECT_DIR}/state
+    - cd ${CI_PROJECT_DIR}/state
+    - git clone git@gitlab.lanl.gov:mpas/mpas-o-flecsi-2.0.git
+    - cd mpas-o-flecsi-2.0
+    - spack repo add spack-repo
+    - spack install mpasoflecsi-deps%gcc@9.3.0 backend=legion ^${MPI_PROVIDER}
     - mkdir -p ${CI_PROJECT_DIR}/state/build
     - cd ${CI_PROJECT_DIR}/state/build
     - *print_build_info
-    - |-
-      cmake -DCMAKE_INSTALL_PREFIX=${CI_PROJECT_DIR}/state/install \
+    - cmake -DCMAKE_INSTALL_PREFIX=${CI_PROJECT_DIR}/state/install \
         -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
         -DCMAKE_CXX_COMPILER=${CXX_COMPILER} \
         -DCMAKE_CXX_FLAGS="${CXX_FLAGS}" \
         -DCMAKE_C_COMPILER=${C_COMPILER} \
         -DCMAKE_C_FLAGS="${C_FLAGS}" \
         ${CMAKE_OPTIONS} \
-        ../..
+        ../mpas-o-flecsi-2.0
     - make
     - CTEST_OUTPUT_ON_FAILURE=1 make test
-    - make install
     - ccache -s
   artifacts:
     expire_in: 2 weeks
@@ -170,7 +174,7 @@
     - *env_permissions
     - *env_spack_restore
     - *env_shell
-    - spack env activate ${ENVIRONMENT}-${MPI_PROVIDER}
+    - spack env activate ${ENVIRONMENT}-${MPI_PROVIDER}`
     - mkdir -p ${CI_PROJECT_DIR}/state/build
     - cd ${CI_PROJECT_DIR}/state/build
     - *print_defaults_build_info

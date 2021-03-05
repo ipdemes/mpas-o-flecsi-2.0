@@ -25,7 +25,7 @@ mpich-defaults:
   needs:
     ["mpich"]
   variables:
-    ENVIRONMENT: master
+    ENVIRONMENT: devel
     MPI_PROVIDER: mpich
     REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
     IMAGE: centos-8
@@ -42,7 +42,7 @@ mpich-legion-gnu:
   needs:
     ["mpich"]
   variables:
-    ENVIRONMENT: master
+    ENVIRONMENT: devel
     MPI_PROVIDER: mpich
     REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
     IMAGE: centos-8
@@ -58,7 +58,7 @@ mpich-legion-gnu:release:
   needs:
     ["mpich"]
   variables:
-    ENVIRONMENT: master
+    ENVIRONMENT: devel
     MPI_PROVIDER: mpich
     REGISTRY: gitlab.lal.gov:5050/mpas/mpas-o-flecsi-2.0
     IMAGE: centos-8
@@ -81,7 +81,7 @@ mpich-mpi-gnu:
   needs:
     ["mpich"]
   variables:
-    ENVIRONMENT: master
+    ENVIRONMENT: devel
     MPI_PROVIDER: mpich
     REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
     IMAGE: centos-8
@@ -97,7 +97,7 @@ mpich-mpi-gnu:release:
   needs:
     ["mpich"]
   variables:
-    ENVIRONMENT: master
+    ENVIRONMENT: devel
     MPI_PROVIDER: mpich
     REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
     IMAGE: centos-8
@@ -120,7 +120,7 @@ openmpi-legion-gnu:
   needs:
     ["openmpi"]
   variables:
-    ENVIRONMENT: master
+    ENVIRONMENT: devel
     MPI_PROVIDER: openmpi
     REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
     IMAGE: centos-8
@@ -136,7 +136,7 @@ openmpi-legion-gnu:release:
   needs:
     ["openmpi"]
   variables:
-    ENVIRONMENT: master
+    ENVIRONMENT: devel
     MPI_PROVIDER: openmpi
     REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
     IMAGE: centos-8
@@ -159,7 +159,7 @@ openmpi-mpi-gnu:
   needs:
     ["openmpi"]
   variables:
-    ENVIRONMENT: master
+    ENVIRONMENT: devel
     MPI_PROVIDER: openmpi
     REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
     IMAGE: centos-8
@@ -175,7 +175,7 @@ openmpi-mpi-gnu:release:
   needs:
     ["openmpi"]
   variables:
-    ENVIRONMENT: master
+    ENVIRONMENT: devel
     MPI_PROVIDER: openmpi
     REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
     IMAGE: centos-8
@@ -198,7 +198,7 @@ mpich-legion-clang:
   needs:
     ["mpich-clang"]
   variables:
-    ENVIRONMENT: master
+    ENVIRONMENT: devel
     MPI_PROVIDER: mpich
     REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
     IMAGE: clearlinux
@@ -221,7 +221,7 @@ mpich-mpi-clang:
   needs:
     ["mpich-clang"]
   variables:
-    ENVIRONMENT: master
+    ENVIRONMENT: devel
     MPI_PROVIDER: mpich
     REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
     IMAGE: clearlinux

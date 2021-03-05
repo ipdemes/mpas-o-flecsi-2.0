@@ -8,7 +8,7 @@ mpich:
   extends: .env_template
   dependencies: []
   variables:
-    ENVIRONMENT: master
+    ENVIRONMENT: devel
     MPI_PROVIDER: mpich
     REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
     IMAGE: centos-8
@@ -19,7 +19,7 @@ mpich-clang:
   extends: .env_template
   dependencies: []
   variables:
-    ENVIRONMENT: master
+    ENVIRONMENT: devel
     MPI_PROVIDER: mpich
     REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
     IMAGE: clearlinux
@@ -30,7 +30,7 @@ openmpi:
   extends: .env_template
   dependencies: []
   variables:
-    ENVIRONMENT: master
+    ENVIRONMENT: devel
     MPI_PROVIDER: openmpi
     REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
     IMAGE: centos-8
