@@ -30,8 +30,8 @@ coupler::task::io(cartmesh::accessor<ro> m,
  
   for(auto j : m.cells<cartmesh::y_axis>()) {
     for(auto i : m.cells<cartmesh::x_axis>()) {
-          //solution << u[j][i] << " "<<v[j][i] <<std::endl; 
-          solution << u[i][j] << " "<<v[i][j] <<std::endl; 
+          solution << u[j][i] << " "<<v[j][i] <<std::endl; 
+          //solution << u[i][j] << " "<<v[i][j] <<std::endl; 
     } // for
   } // for
 
