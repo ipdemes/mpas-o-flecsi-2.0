@@ -1,3 +1,16 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8159983..5019af9 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -43,7 +43,7 @@ endif()
+ # Version.
+ #------------------------------------------------------------------------------#
+ 
+-include(version)
++#include(version)
+ 
+ set(FleCSI_VERSION ${${PROJECT_NAME}_VERSION})
+ 
 diff --git a/flecsi/topo/unstructured/coloring_utils.hh b/flecsi/topo/unstructured/coloring_utils.hh
 index e5af173..dcb8933 100644
 --- a/flecsi/topo/unstructured/coloring_utils.hh
@@ -99,5 +112,3 @@ index f288e1a..df63423 100644
  
    std::vector<idx_t> vtxdist = as<idx_t>(naive.distribution);
    std::vector<idx_t> xadj = as<idx_t>(naive.offsets);
-
-
