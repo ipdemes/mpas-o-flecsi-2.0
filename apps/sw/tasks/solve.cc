@@ -238,7 +238,7 @@ void compute_scalar_tend(mesh::accessor<ro, ro> m,
                          acc<vlreal, ro, ro> h_edge,
                          acc<vlreal, ro, ro> u,
                          acc<vltracer, ro, ro> tracers,
-                         acc<vltracer, rw, na> tracer_tend)
+                         acc<vltracer, wo, na> tracer_tend)
 {
   auto nTracers = maxTracers;
   for(auto c : m.cells()) {
