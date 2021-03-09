@@ -16,13 +16,13 @@ void compute_solve_diagnostics(
     field<double>::accessor<ro, ro> fVertex,
     field<vltensor<double>>::accessor<ro, ro> h,
     field<vltensor<double>>::accessor<ro, ro> u,
-    field<vltensor<double>>::accessor<rw, ro> h_edge,
-    field<vltensor<double>>::accessor<rw, ro> h_vertex,
-    field<vltensor<double>>::accessor<rw, ro> circulation,
-    field<vltensor<double>>::accessor<rw, ro> vorticity,
-    field<vltensor<double>>::accessor<rw, ro> ke,
-    field<vltensor<double>>::accessor<rw, ro> pv_edge,
-    field<vltensor<double>>::accessor<rw, ro> pv_vertex)
+    field<vltensor<double>>::accessor<wo, na> h_edge,
+    field<vltensor<double>>::accessor<wo, na> h_vertex,
+    field<vltensor<double>>::accessor<wo, na> circulation,
+    field<vltensor<double>>::accessor<wo, na> vorticity,
+    field<vltensor<double>>::accessor<wo, na> ke,
+    field<vltensor<double>>::accessor<wo, na> pv_edge,
+    field<vltensor<double>>::accessor<wo, na> pv_vertex)
 {
   // compute height on cell edges at velocity locations
   auto nCells = m.cells().size();
