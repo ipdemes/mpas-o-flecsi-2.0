@@ -55,6 +55,7 @@ int read_fields()
   close_file(file);
 
   execute<task::init_bottom_depth>(m, bottomDepth(m));
+  execute<task::init_extra_fields>(m, tracers[curr](m));
 
   return 0;
 }

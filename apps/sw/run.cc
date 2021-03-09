@@ -1,3 +1,4 @@
+#include "mpasoflecsi/tasks/io.hh"
 #include "state.hh"
 #include "tasks/solve.hh"
 #include "run.hh"
@@ -5,6 +6,8 @@
 namespace mpas { namespace sw { namespace action {
 
 using namespace flecsi;
+
+static auto output_task = mpas::task::field_output_wrapper<inputs::output_fields>::output;
 
 
 static void advance_timestep(double dt)
@@ -69,18 +72,35 @@ static void advance_timestep(double dt)
 
 int run()
 {
+  hid_t mfile;
+  if (inputs::output_freq.value()) {
+    execute<mpas::task::mesh_output_init, mpi>(m, areaCell(m), dvEdge(m), dcEdge(m),
+                                               xCell(m), yCell(m), zCell(m),
+                                               latCell(m), lonCell(m), latVertex(m), lonVertex(m),
+                                               meshDensity(m), "test.ncdf", &mfile);
+    execute<output_task, mpi>(m, mfile, 0, h[curr](m), bottomDepth(m));
+  }
+
   execute<task::compute_solve_diagnostics>(m, dvEdge(m), dcEdge(m),
                                            areaCell(m), areaTriangle(m), kiteAreasOnVertex(m),
                                            fVertex(m), h[curr](m), u[curr](m), h_edge[curr](m),
                                            h_vertex[curr](m), circulation(m), vorticity(m),
                                            ke[curr](m), pv_edge[curr](m), pv_vertex(m));
-
   float elapsed = 0;
   double dt = 40;
-  for (std::size_t i = 1; i <= inputs::nsteps.value(); ++i) {
+  std::size_t time_cnt{1};
+  for (std::size_t i{1}; i <= inputs::nsteps.value(); ++i) {
     flog(info) << "Running timestep " << i << std::endl;
     advance_timestep(dt);
+    if (inputs::output_freq.value() and (i % inputs::output_freq.value() == 0)) {
+      execute<output_task, mpi>(m, mfile, time_cnt, h[curr](m), bottomDepth(m));
+      ++time_cnt;
+    }
     elapsed += dt;
+  }
+
+  if (inputs::output_freq.value()) {
+    execute<mpas::task::mesh_output_finalize, mpi>(mfile);
   }
 
   return 0;

@@ -3,8 +3,7 @@
 # All rights reserved
 #------------------------------------------------------------------------------#
 set(tasks_HEADERS
-  io.hh
-  iohelper.hh)
+  io.hh)
 
 set(tasks_SOURCES
   io.cc)
@@ -22,5 +21,3 @@ set(tasks_SOURCES
   ${tasks_SOURCES}
   PARENT_SCOPE
 )
-
-
