@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 8159983..5019af9 100644
+index 8e1893d..9977067 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -43,7 +43,7 @@ endif()
@@ -10,6 +10,15 @@ index 8159983..5019af9 100644
 +#include(version)
  
  set(FleCSI_VERSION ${${PROJECT_NAME}_VERSION})
+ 
+@@ -396,7 +396,7 @@ if(NOT FORMAT_ONLY)
+   set(FLECSI_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/include
+     ${FLECSI_EXTERNAL_INCLUDE_DIRS})
+ 	# Setting up target properties for downstream usage
+-	target_include_directories(FleCSI PUBLIC ${FLECSI_INCLUDE_DIRS})
++	target_include_directories(FleCSI PRIVATE ${FLECSI_INCLUDE_DIRS})
+ 
+   set(FLECSI_CMAKE_DIR ${CMAKE_INSTALL_PREFIX}/${LIBDIR}/cmake/FleCSI)
  
 diff --git a/flecsi/topo/unstructured/coloring_utils.hh b/flecsi/topo/unstructured/coloring_utils.hh
 index e5af173..dcb8933 100644
