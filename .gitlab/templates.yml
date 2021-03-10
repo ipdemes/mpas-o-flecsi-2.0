@@ -122,12 +122,7 @@
     - *env_spack_restore
     - *env_shell
     - spack env activate ${ENVIRONMENT}-${MPI_PROVIDER}
-    - mkdir -p ${CI_PROJECT_DIR}/state
-    - cd ${CI_PROJECT_DIR}/state
-    - git clone git@gitlab.lanl.gov:mpas/mpas-o-flecsi-2.0.git
-    - cd mpas-o-flecsi-2.0
-    - spack repo add spack-repo
-    - spack install mpasoflecsi-deps%gcc@9.3.0 backend=legion ^${MPI_PROVIDER}
+    - spack install mpasoflecsi-deps backend=legion build_type=Release ^${MPI_PROVIDER}
     - mkdir -p ${CI_PROJECT_DIR}/state/build
     - cd ${CI_PROJECT_DIR}/state/build
     - *print_build_info
@@ -138,7 +133,7 @@
         -DCMAKE_C_COMPILER=${C_COMPILER} \
         -DCMAKE_C_FLAGS="${C_FLAGS}" \
         ${CMAKE_OPTIONS} \
-        ../mpas-o-flecsi-2.0
+        ../..
     - make
     - CTEST_OUTPUT_ON_FAILURE=1 make test
     - ccache -s
