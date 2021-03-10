@@ -77,6 +77,15 @@ include_directories( ${HDF5_INCLUDE_DIRS} )
 list(APPEND MPAS_LIBRARY_DEPENDENCIES ${HDF5_LIBRARIES} ${HDF5_HL_LIBRARIES})
 message( STATUS "IO with HDF5 is enabled" )
 
+#------------------------------------------------------------------------------#
+# MPI
+#------------------------------------------------------------------------------#
+include(mpi)
+if(NOT MPI_${MPI_LANGUAGE}_FOUND)
+      message (FATAL_ERROR "MPI is required for mpasoflecsi`")
+endif()
+list(APPEND MPAS_LIBRARY_DEPENDENCIES ${DL_LIBS} ${MPI_LIBRARIES})
+
 
 #------------------------------------------------------------------------------#
 # Apps
@@ -91,7 +100,7 @@ add_subdirectory(apps)
 include(library)
 add_library_target(mpasoflecsi mpasoflecsi EXPORT_TARGET MPASOFleCSITargets)
 message(STATUS "MPAS Libs: " "${MPAS_LIBRARY_DEPENDENCIES}")
-target_link_libraries(mpasoflecsi INTERFACE ${MPAS_LIBRARY_DEPENDENCIES})
+target_link_libraries(mpasoflecsi PUBLIC ${MPAS_LIBRARY_DEPENDENCIES})
 
 #----------------------------------------------------------------------------#
 # CMake config file: This should be the last thing to happen.
