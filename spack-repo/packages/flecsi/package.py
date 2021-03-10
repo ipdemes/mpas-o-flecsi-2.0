@@ -22,6 +22,7 @@ class Flecsi(CMakePackage):
     git      = 'https://github.com/flecsi/flecsi.git'
 
     version('devel', branch='devel', submodules=False, preferred=False)
+    version('patch', commit='2adabb0c21af0a4fca6e1a5646dbbe3890f1077c')
 
     #--------------------------------------------------------------------------#
     # Variants
@@ -35,7 +36,7 @@ class Flecsi(CMakePackage):
             values=('none', 'low', 'medium', 'high'),
             description='Set Caliper Profiling Detail', multi=False)
 
-    variant('flog', default=False,
+    variant('flog', default=True,
             description='Enable FLOG Logging Utility')
 
     variant('graphviz', default=False,
@@ -57,6 +58,10 @@ class Flecsi(CMakePackage):
 
     variant('shared', default=True,
             description='Build Shared Libraries')
+
+    #patch
+    variant('patch', default=False,
+            description='patch FLeCSI')
 
     #--------------------------------------------------------------------------#
     # Dependencies
@@ -108,6 +113,9 @@ class Flecsi(CMakePackage):
     # HPX
 
     depends_on('hpx@1.3.0 cxxstd=17 malloc=system',when='backend=hpx')
+
+    #patch
+    patch('flecsi.patch', when='+patch')
 
     #--------------------------------------------------------------------------#
     # Conflicts
