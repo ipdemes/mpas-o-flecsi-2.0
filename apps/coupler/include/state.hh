@@ -15,7 +15,8 @@ namespace coupler {
 inline const field<double>::definition<cartmesh, cartmesh::cells> ud;
 inline const field<double>::definition<cartmesh, cartmesh::cells> vd;
 
-inline cartmesh::slot m;
-inline cartmesh::cslot coloring;
-
+inline cartmesh::slot mesh_src;
+inline cartmesh::cslot coloring_src;
+inline cartmesh::slot mesh_trg;
+inline cartmesh::cslot coloring_trg;
 } // namespace coupler

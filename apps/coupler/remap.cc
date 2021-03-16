@@ -15,7 +15,7 @@ using namespace flecsi;
 
 int
 coupler::action::remap() {
-  execute<task::init_fields>(m, ud(m), vd(m));
-  execute<task::copy_fields>(m, ud(m), vd(m));
+  execute<task::init_fields>(mesh_src, mesh_trg, ud(mesh_src), vd(mesh_trg));
+  execute<task::copy_fields>(mesh_src, mesh_trg, ud(mesh_src), vd(mesh_trg));
   return 0;
 } // remap

@@ -11,7 +11,8 @@
 namespace coupler {
 namespace task {
 
-void io(cartmesh::accessor<ro> m, 
+void io(cartmesh::accessor<ro> mesh_src,
+	cartmesh::accessor<ro> mesh_trg, 
         field<double>::accessor<ro, ro> ua,
         field<double>::accessor<ro, ro> va);
 

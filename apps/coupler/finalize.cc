@@ -15,7 +15,7 @@ using namespace flecsi;
 
 int
 coupler::action::finalize() {
-  execute<task::io>(m, ud(m), vd(m));
+  execute<task::io>(mesh_src, mesh_trg, ud(mesh_src), vd(mesh_trg));
   return 0;
 } // remap
 

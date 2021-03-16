@@ -16,22 +16,27 @@ int coupler::action::init_mesh() {
              << " mesh" << std::endl;
   flecsi::log::flush();
 
-//  std::cout << "Initializing " << x_extents.value() << "x" << y_extents.value()
-//             << " mesh" << std::endl;
-
   std::vector<std::size_t> axis_extents{x_extents.value(), y_extents.value()};
 
   // Distribute the number of processes over the axis colors.
   auto axis_colors = cartmesh::distribute(flecsi::processes(), axis_extents);
 
-  coloring.allocate(axis_colors, axis_extents);
+  //source mesh
+  coloring_src.allocate(axis_colors, axis_extents);
+  cartmesh::grect src_bnds;
+  src_bnds[0][0] = 0.0;
+  src_bnds[0][1] = 1.0;
+  src_bnds[1] = src_bnds[0];
+  mesh_src.allocate(coloring_src.get(), src_bnds);
 
-  cartmesh::grect geometry;
-  geometry[0][0] = 0.0;
-  geometry[0][1] = 1.0;
-  geometry[1] = geometry[0];
+  //target mesh
+  coloring_trg.allocate(axis_colors, axis_extents);
+  cartmesh::grect trg_bnds;
+  trg_bnds[0][0] = 0.0;
+  trg_bnds[0][1] = 1.0;
+  trg_bnds[1] = trg_bnds[0];
+  mesh_trg.allocate(coloring_trg.get(), trg_bnds);
 
-  m.allocate(coloring.get(), geometry);
   return 0;
 } // init_mesh
 

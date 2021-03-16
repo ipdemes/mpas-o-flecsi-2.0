@@ -8,16 +8,19 @@
 #include <flecsi/flog.hh>
 using namespace flecsi; 
 
-void coupler::task::copy_fields(cartmesh::accessor<ro> m,
+void coupler::task::copy_fields(
+  cartmesh::accessor<ro> mesh_src,
+  cartmesh::accessor<ro> mesh_trg, 
   field<double>::accessor<ro, ro> ua,
   field<double>::accessor<wo, ro> va) {
 
-  auto u = m.mdspan<cartmesh::cells>(ua);
-  auto v = m.mdspan<cartmesh::cells>(va);
+  auto u = mesh_src.mdspan<cartmesh::cells>(ua);
+  auto v = mesh_trg.mdspan<cartmesh::cells>(va);
 
-  for(auto j : m.cells<cartmesh::y_axis>()) {
-    for(auto i : m.cells<cartmesh::x_axis>()) {
-          v[j][i] = u[j][i]; 
+  //copy field value from source to target 
+  for(auto j : mesh_trg.cells<cartmesh::y_axis>()) {
+    for(auto i : mesh_trg.cells<cartmesh::x_axis>()) {
+          v[i][j] = u[i][j]; 
     } // for
   } // for
   

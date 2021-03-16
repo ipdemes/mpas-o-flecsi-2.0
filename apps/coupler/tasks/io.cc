@@ -5,42 +5,50 @@
 
 #include "tasks/io.hh"
 
+#include <flecsi/flog.hh>
 #include <sstream>
 
 using namespace flecsi;
 
 void
-coupler::task::io(cartmesh::accessor<ro> m, 
+coupler::task::io(
+  cartmesh::accessor<ro> mesh_src, 
+  cartmesh::accessor<ro> mesh_trg, 
   field<double>::accessor<ro, ro> ua, 
   field<double>::accessor<ro, ro> va) {
 
-  auto u = m.mdspan<cartmesh::cells>(ua);
-  auto v = m.mdspan<cartmesh::cells>(va);
+  auto u = mesh_src.mdspan<cartmesh::cells>(ua);
+  auto v = mesh_trg.mdspan<cartmesh::cells>(va);
 
   std::stringstream ss;
   if(processes() == 1) {
-    ss << "solution.dat";
+    ss << "remap.dat";
   }
   else {
-    ss << "solution-" << process() << ".dat";
+    ss << "remap-" << process() << ".dat";
   } // if
 
   std::ofstream solution(ss.str(), std::ofstream::out);
-  solution << " U        V"<<std::endl;
+  solution << " SOURCE MESH AND FIELD "<<std::endl;
+  solution << "    x        y        U"<<std::endl;
  
-  for(auto j : m.cells<cartmesh::y_axis>()) {
-    for(auto i : m.cells<cartmesh::x_axis>()) {
-          solution << u[j][i] << " "<<v[j][i] <<std::endl; 
-          //solution << u[i][j] << " "<<v[i][j] <<std::endl; 
+  for(auto j : mesh_src.cells<cartmesh::y_axis>()) {
+    const double y = mesh_src.value<cartmesh::y_axis>(j);
+    for(auto i : mesh_src.cells<cartmesh::x_axis>()) {
+      const double x = mesh_src.value<cartmesh::x_axis>(i);
+          solution << x <<" "<< y <<" "<< u[i][j] <<std::endl; 
     } // for
   } // for
 
-  /*for(auto j : m.vertices<mesh::y_axis, mesh::logical>()) {
-    const double y = m.value<mesh::y_axis>(j);
-    for(auto i : m.vertices<mesh::x_axis, mesh::logical>()) {
-      const double x = m.value<mesh::x_axis>(i);
-      solution << x << " " << y << " " << u[j][i] << std::endl;
+  solution << "\n\n TARGET MESH AND FIELD "<<std::endl;
+  solution << "    x        y        V"<<std::endl;
+ 
+  for(auto j : mesh_trg.cells<cartmesh::y_axis>()) {
+    const double y = mesh_trg.value<cartmesh::y_axis>(j);
+    for(auto i : mesh_trg.cells<cartmesh::x_axis>()) {
+      const double x = mesh_trg.value<cartmesh::x_axis>(i);
+          solution << x <<" "<< y <<" "<< v[i][j] <<std::endl; 
     } // for
   } // for
-  */
+
 } // io

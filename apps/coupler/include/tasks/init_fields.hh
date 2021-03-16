@@ -11,9 +11,10 @@
 namespace coupler {
 namespace task {
 
-void init_fields(cartmesh::accessor<ro> m,
-  field<double>::accessor<wo, wo> ua,
-  field<double>::accessor<wo, wo> va); 
+void init_fields(cartmesh::accessor<ro> mesh_src,
+                 cartmesh::accessor<ro> mesh_trg, 
+      	         field<double>::accessor<wo, wo> ua,
+                 field<double>::accessor<wo, wo> va); 
 
 } // namespace task
 } // namespace coupler
