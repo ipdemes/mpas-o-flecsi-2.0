@@ -8,6 +8,7 @@
 #include <mpasoflecsi/specialization/mesh.hh>
 #include <mpasoflecsi/specialization/definition.hh>
 
+#include "state.hh"
 #include "io_hdf5.hh"
 
 namespace mpas { namespace io {
@@ -143,7 +144,7 @@ public:
       ++count;
     }
 
-    mpi_ph5::write_buffer<2>(file, label, {nOutputTimes, gsize}, temp.size(),
+    mpi_ph5::write_buffer<2>(file, label, {inputs::num_output_times.value(), gsize}, temp.size(),
                              coord.data(), temp.data());
 
     temp.clear();
@@ -204,7 +205,7 @@ public:
       }
     }
 
-    mpi_ph5::write_buffer<3>(file, label, {nOutputTimes, gsize, arr(0).size()},
+    mpi_ph5::write_buffer<3>(file, label, {inputs::num_output_times.value(), gsize, arr(0).size()},
                              temp.size(), coord.data(), temp.data());
 
     temp.clear();

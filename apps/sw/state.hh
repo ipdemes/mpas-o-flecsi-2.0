@@ -49,10 +49,6 @@ inline flecsi::program_option<std::size_t>
     nsteps("Timesteps", "nsteps,s", "Number of timesteps to run.",
            {{flecsi::option_default, 10}});
 
-inline flecsi::program_option<int>
-output_freq("Output", "freq,f", "Output frequency.",
-            {{flecsi::option_default, 0}});
-
 using output_fields = type_list<io::desc::thickness, io::desc::topography>;
 
 }

@@ -73,7 +73,10 @@ static void advance_timestep(double dt)
 int run()
 {
   hid_t mfile;
-  if (inputs::output_freq.value()) {
+
+  io::output_flagger output_flag(inputs::nsteps.value());
+
+  if (output_flag) {
     execute<mpas::task::mesh_output_init, mpi>(m, areaCell(m), dvEdge(m), dcEdge(m),
                                                xCell(m), yCell(m), zCell(m),
                                                latCell(m), lonCell(m), latVertex(m), lonVertex(m),
@@ -86,20 +89,21 @@ int run()
                                            fVertex(m), h[curr](m), u[curr](m), h_edge[curr](m),
                                            h_vertex[curr](m), circulation(m), vorticity(m),
                                            ke[curr](m), pv_edge[curr](m), pv_vertex(m));
+
   float elapsed = 0;
   double dt = 40;
   std::size_t time_cnt{1};
   for (std::size_t i{1}; i <= inputs::nsteps.value(); ++i) {
     flog(info) << "Running timestep " << i << std::endl;
     advance_timestep(dt);
-    if (inputs::output_freq.value() and (i % inputs::output_freq.value() == 0)) {
+    if (output_flag.output_step(i)) {
       execute<output_task, mpi>(m, mfile, time_cnt, h[curr](m), bottomDepth(m));
       ++time_cnt;
     }
     elapsed += dt;
   }
 
-  if (inputs::output_freq.value()) {
+  if (output_flag) {
     execute<mpas::task::mesh_output_finalize, mpi>(mfile);
   }
 

@@ -4,6 +4,7 @@
  *----------------------------------------------------------------------------*/
 
 #include "mpasoflecsi/io/io_hdf5.hh"
+#include "mpasoflecsi/io/state.hh"
 #include "io.hh"
 
 namespace mpas { namespace task {
@@ -107,7 +108,7 @@ void mesh_output_init(mesh::accessor<ro, ro> m,
     writer.write_dimscale<vert_space>(m);
     writer.write_dimscale("vertexDegree", vertexDegree);
     writer.write_dimscale("nVertLevels", nVertLevels);
-    writer.write_dimscale("Time", nOutputTimes);
+    writer.write_dimscale("Time", io::inputs::num_output_times.value());
     writer.write_dimscale("nTracers", maxTracers);
   } // end write dimension scales
   { // Write 1D float arrays
