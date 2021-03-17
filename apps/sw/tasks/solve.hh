@@ -128,4 +128,11 @@ void timeshift(mesh::accessor<ro, ro> m,
                acc<vlreal, ro, na> ke_new,
                acc<vlreal, ro, na> pv_edge_new);
 
+double compute_error(mesh::accessor<ro, ro> m,
+                     acc<vlreal, ro, na> h,
+                     acc<double, ro, na> latCell,
+                     acc<double, ro, na> lonCell,
+                     acc<double, ro, na> areaCell,
+                     double elapsed);
+
 }}}

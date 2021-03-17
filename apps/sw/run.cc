@@ -74,9 +74,9 @@ int run()
 {
   hid_t mfile;
 
-  io::output_flagger output_flag(inputs::nsteps.value());
+  auto & state = control::state();
 
-  if (output_flag) {
+  if (state.output()) {
     execute<mpas::task::mesh_output_init, mpi>(m, areaCell(m), dvEdge(m), dcEdge(m),
                                                xCell(m), yCell(m), zCell(m),
                                                latCell(m), lonCell(m), latVertex(m), lonVertex(m),
@@ -90,20 +90,20 @@ int run()
                                            h_vertex[curr](m), circulation(m), vorticity(m),
                                            ke[curr](m), pv_edge[curr](m), pv_vertex(m));
 
-  float elapsed = 0;
+  state.elapsed() = 0;
   double dt = 40;
   std::size_t time_cnt{1};
-  for (std::size_t i{1}; i <= inputs::nsteps.value(); ++i) {
+  for (std::size_t i{1}; i <= state.steps(); ++i) {
     flog(info) << "Running timestep " << i << std::endl;
     advance_timestep(dt);
-    if (output_flag.output_step(i)) {
+    if (state.output_step(i)) {
       execute<output_task, mpi>(m, mfile, time_cnt, h[curr](m), bottomDepth(m));
       ++time_cnt;
     }
-    elapsed += dt;
+    state.elapsed() += dt;
   }
 
-  if (output_flag) {
+  if (state.output()) {
     execute<mpas::task::mesh_output_finalize, mpi>(mfile);
   }
 

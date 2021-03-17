@@ -1,3 +1,5 @@
+#include "mpasoflecsi/eqns/metrics.hh"
+
 #include "../state.hh"
 #include "solve.hh"
 
@@ -396,6 +398,41 @@ void timeshift(mesh::accessor<ro, ro> m,
       pv_edge_old(e)[j] = pv_edge_new(e)[j];
     }
   }
+}
+
+
+double compute_error(mesh::accessor<ro, ro> m,
+                     acc<vlreal, ro, na> h,
+                     acc<double, ro, na> latCell,
+                     acc<double, ro, na> lonCell,
+                     acc<double, ro, na> areaCell,
+                     double elapsed)
+{
+  using namespace mpas_constants;
+  constexpr double h0 = 1000.0;
+  auto day_frac = elapsed / 86400 / 12;
+  auto rot_ang = (3 * pi / 2. ) + 2 * pi * day_frac;
+
+  double num = 0;
+  double den = 0;
+  for (auto c : m.cells()) {
+    double h_true;
+    auto r = eqns::sphere_distance(0.0, rot_ang, latCell(c), lonCell(c), a);
+    if (r < a/3.0)
+      h_true = (h0 / 2.0) * (1.0 + cos(pi*r*3.0/a));
+    else
+      h_true = h0 / 2.0;
+
+    num += std::pow(h(c)[0] - h_true, 2) * std::cos(latCell(c)) / areaCell(c);
+    den += std::pow(h_true, 2) * std::cos(latCell(c)) / areaCell(c);
+  }
+
+  num /= (4 * pi);
+  den /= (4 * pi);
+
+  double err = std::sqrt(num) / std::sqrt(den);
+
+  return err;
 }
 
 }}}

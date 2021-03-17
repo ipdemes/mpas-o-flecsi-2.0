@@ -21,7 +21,7 @@ class output_flagger
 public:
   output_flagger(int num_timesteps) :
     output_freq(static_cast<float>(num_timesteps) /
-                inputs::num_output_times.value()) {}
+                (inputs::num_output_times.value() - 2)) {}
 
   inline operator bool() const {
     return output_freq != 0;
