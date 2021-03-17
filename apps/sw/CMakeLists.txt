@@ -13,6 +13,7 @@ add_executable(sw
   tasks/testcase.cc
   tasks/solve.cc
   sw.cc
+  finalize.cc
 )
 
 #------------------------------------------------------------------------------#
@@ -26,5 +27,5 @@ target_link_libraries(sw
 set (MPASFLECSI_DATA_DIR "${PROJECT_SOURCE_DIR}/data/")
 add_test(
   NAME mpasflecsi_sw
-  COMMAND $<TARGET_FILE:sw> ${MPASFLECSI_DATA_DIR}/meshes/Sphere_240QU.nc
+  COMMAND $<TARGET_FILE:sw> ${MPASFLECSI_DATA_DIR}/meshes/Sphere_240QU.nc -s 5 --num_output 0
 )

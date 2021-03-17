@@ -10,15 +10,13 @@
 #include <flecsi/flog.hh>
 
 namespace mpas {
+namespace sw {
 namespace action {
 
-int
-finalize() {
+int finalize();
 
-  return 0;
-} //init_mesh
+inline control::action<finalize, cp::finalize> finalize_action;
 
-control::action<finalize, cp::finalize> finalize_action;
-
-} // namespace action
-} // namespace mpas
+}
+}
+}

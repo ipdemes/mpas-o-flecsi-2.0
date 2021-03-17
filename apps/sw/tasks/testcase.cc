@@ -13,6 +13,18 @@ namespace mpas { namespace sw { namespace task {
 
 using namespace flecsi;
 
+void init_extra_fields(mesh::accessor<ro, ro> m,
+                       acc<vltracer, wo, wo> tracers)
+{
+  for (auto c : m.cells()) {
+    for (std::size_t j{0}; j < nVertLevels; j++) {
+      for (std::size_t k{0}; k < maxTracers; k++) {
+        tracers(c)[j][k] = 0.0;
+      }
+    }
+  }
+}
+
 void setup_case_1(mesh::accessor<ro, ro> m,
                   field<double>::accessor<ro, ro> dvEdge,
                   field<double>::accessor<ro, ro> latCell,

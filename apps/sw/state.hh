@@ -8,6 +8,7 @@
 #include "flecsi/execution.hh"
 #include "mpasoflecsi/common/types.hh"
 #include "mpasoflecsi/specialization/mesh.hh"
+#include "mpasoflecsi/io/desc.hh"
 
 namespace mpas { namespace sw {
 
@@ -45,8 +46,10 @@ test_case("Problem", "testcase,t", "Test case to run [1,5].",
           {{flecsi::option_default, test::case1}});
 
 inline flecsi::program_option<std::size_t>
-nsteps("Timesteps", "nsteps,s", "Number of timesteps to run.",
-       {{flecsi::option_default, 10}});
+    nsteps("Timesteps", "nsteps,s", "Number of timesteps to run.",
+           {{flecsi::option_default, 10}});
+
+using output_fields = type_list<io::desc::thickness, io::desc::topography>;
 
 }
 

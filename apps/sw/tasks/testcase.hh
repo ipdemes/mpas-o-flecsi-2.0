@@ -9,6 +9,12 @@
 
 namespace mpas { namespace sw { namespace task {
 
+/**
+ * Initialize fields that may be left uninitialized by test cases.
+ */
+void init_extra_fields(mesh::accessor<flecsi::ro, flecsi::ro> m,
+                       acc<vltracer, wo, wo> tracers);
+
 void setup_case_1(mesh::accessor<flecsi::ro, flecsi::ro> m,
                   flecsi::field<double>::accessor<flecsi::ro, flecsi::ro> dvEdge,
                   flecsi::field<double>::accessor<flecsi::ro, flecsi::ro> latCell,
