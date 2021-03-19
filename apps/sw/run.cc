@@ -81,7 +81,8 @@ int run()
                                                xCell(m), yCell(m), zCell(m),
                                                latCell(m), lonCell(m), latVertex(m), lonVertex(m),
                                                meshDensity(m), "test.ncdf", &mfile);
-    execute<output_task, mpi>(m, mfile, 0, h[curr](m), bottomDepth(m));
+    execute<output_task, mpi>(m, mfile, 0, h[curr](m), bottomDepth(m),
+                              vorticity(m), pv_vertex(m), tracers[curr](m));
   }
 
   execute<task::compute_solve_diagnostics>(m, dvEdge(m), dcEdge(m),
@@ -97,7 +98,8 @@ int run()
     flog(info) << "Running timestep " << i << std::endl;
     advance_timestep(dt);
     if (state.output_step(i)) {
-      execute<output_task, mpi>(m, mfile, time_cnt, h[curr](m), bottomDepth(m));
+      execute<output_task, mpi>(m, mfile, time_cnt, h[curr](m), bottomDepth(m),
+                                vorticity(m), pv_vertex(m), tracers[curr](m));
       ++time_cnt;
     }
     state.elapsed() += dt;

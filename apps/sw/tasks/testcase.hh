@@ -13,6 +13,8 @@ namespace mpas { namespace sw { namespace task {
  * Initialize fields that may be left uninitialized by test cases.
  */
 void init_extra_fields(mesh::accessor<flecsi::ro, flecsi::ro> m,
+                       acc<vlreal, wo, wo> vorticity,
+                       acc<vlreal, wo, wo> pv_vertex,
                        acc<vltracer, wo, wo> tracers);
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +54,7 @@ void setup_case_5(mesh::accessor<ro, ro> m,
                   acc<double, wo, na> fEdge,
                   acc<vlreal, wo, na> u,
                   acc<vlreal, wo, na> h,
-                  acc<vltracer, wo, na> tracers);
+                  acc<vltracer, rw, na> tracers);
 
 
 ////////////////////////////////////////////////////////////////////////////////

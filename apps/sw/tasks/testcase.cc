@@ -14,8 +14,17 @@ namespace mpas { namespace sw { namespace task {
 using namespace flecsi;
 
 void init_extra_fields(mesh::accessor<ro, ro> m,
+                       acc<vlreal, wo, wo> vorticity,
+                       acc<vlreal, wo, wo> pv_vertex,
                        acc<vltracer, wo, wo> tracers)
 {
+  for (auto v : m.vertices()) {
+    for (std::size_t k{0}; k < maxTracers; k++) {
+      pv_vertex(v)[k] = 0.0;
+      vorticity(v)[k] = 0.0;
+    }
+  }
+
   for (auto c : m.cells()) {
     for (std::size_t j{0}; j < nVertLevels; j++) {
       for (std::size_t k{0}; k < maxTracers; k++) {
@@ -81,7 +90,7 @@ void setup_case_5(mesh::accessor<ro, ro> m,
                   acc<double, wo, na> fEdge,
                   acc<vlreal, wo, na> u,
                   acc<vlreal, wo, na> h,
-                  acc<vltracer, wo, na> tracers)
+                  acc<vltracer, rw, na> tracers)
 {
   using namespace mpas_constants;
   constexpr double u0 = 20;

@@ -59,7 +59,11 @@ inline flecsi::program_option<std::size_t>
     nsteps("Timesteps", "nsteps,s", "Number of timesteps to run.",
            {{flecsi::option_default, 10}});
 
-using output_fields = type_list<io::desc::thickness, io::desc::topography>;
+using output_fields = type_list<io::desc::thickness,
+                                io::desc::topography,
+                                io::desc::vorticity,
+                                io::desc::pv_vertex,
+                                io::desc::tracers>;
 
 }
 
