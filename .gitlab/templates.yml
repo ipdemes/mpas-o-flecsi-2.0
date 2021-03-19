@@ -84,8 +84,7 @@
     - spack repo add spack-repo
     # This uses the legion backend because it also satisfies the dependencies
     # for MPI (and potentially HPX)
-    - spack install ${VERSION}
-        backend=legion ${VARIANTS} ^${MPI_PROVIDER}
+    - spack install mpasoflecsi-deps backend=legion build_type=Release ^${MPI_PROVIDER} target=skylake
     - *env_spack_archive
   artifacts:
     when: on_success
@@ -122,7 +121,7 @@
     - *env_spack_restore
     - *env_shell
     - spack env activate ${ENVIRONMENT}-${MPI_PROVIDER}
-    - spack install mpasoflecsi-deps backend=legion build_type=Release ^${MPI_PROVIDER}
+    - spack install mpasoflecsi-deps backend=legion build_type=Release ^${MPI_PROVIDER} target=skylake
     - mkdir -p ${CI_PROJECT_DIR}/state/build
     - cd ${CI_PROJECT_DIR}/state/build
     - *print_build_info
