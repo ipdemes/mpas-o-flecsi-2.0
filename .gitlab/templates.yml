@@ -173,7 +173,7 @@
     - cd ${CI_PROJECT_DIR}/state/build
     - *print_defaults_build_info
     - |-
-      cmake -DCMAKE_INSTALL_PREFIX=${CI_PROJECT_DIR}/state/install ../..
+      cmake -DCMAKE_INSTALL_PREFIX=${CI_PROJECT_DIR}/state/install ${CI_PROJECT_DIR}
     - make
     - make install
     - ccache -s
