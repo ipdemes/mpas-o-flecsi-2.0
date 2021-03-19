@@ -126,6 +126,7 @@ inline const flecsi::field<double>::definition<mesh, mesh::edges>    dcEdge;
 inline const flecsi::field<double>::definition<mesh, mesh::vertices> areaTriangle;
 inline const flecsi::field<double>::definition<mesh, mesh::cells>    areaCell;
 inline const flecsi::field<double>::definition<mesh, mesh::vertices> fVertex;
+inline const flecsi::field<double>::definition<mesh, mesh::edges>    fEdge;
 inline const flecsi::field<double>::definition<mesh, mesh::cells>    bottomDepth;
 
 inline const flecsi::field<vdtensor<int>>::definition<mesh, mesh::vertices> kiteAreasOnVertex;

@@ -69,6 +69,18 @@ int init_testcase()
     execute<task::setup_case_1>(m, dvEdge(m), latCell(m), lonCell(m),
                                 latVertex(m), lonVertex(m), u[curr](m), h[curr](m));
     break;
+  case test::case5 :
+    execute<task::setup_case_5>(m, dvEdge(m), latCell(m), lonCell(m),
+                                latVertex(m), lonVertex(m),
+                                latEdge(m), lonEdge(m),
+                                bottomDepth(m), fVertex(m), fEdge(m),
+                                u[curr](m), h[curr](m), tracers[curr](m));
+    break;
+  case test::case6 :
+    execute<task::setup_case_6>(m, dvEdge(m), latCell(m), lonCell(m),
+                                latVertex(m), lonVertex(m),
+                                u[curr](m), h[curr](m));
+    break;
   }
 
   return 0;

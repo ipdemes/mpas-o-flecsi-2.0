@@ -12,7 +12,7 @@
 
 namespace mpas { namespace sw {
 
-enum class test { case1 };
+enum class test { case1, case5, case6 };
 inline std::istream & operator>>(std::istream & is, test & tc)
 {
   std::string token;
@@ -20,6 +20,10 @@ inline std::istream & operator>>(std::istream & is, test & tc)
 
   if (token == "1")
     tc = test::case1;
+  else if (token == "5")
+    tc = test::case5;
+  else if (token == "6")
+    tc = test::case6;
   else
     is.setstate(std::ios_base::failbit);
 
@@ -30,6 +34,12 @@ inline std::ostream & operator<<(std::ostream & os, test tc)
   switch (tc) {
   case test::case1 :
     os << "case 1";
+    break;
+  case test::case5 :
+    os << "case 5";
+    break;
+  case test::case6 :
+    os << "case 6";
     break;
   }
   return os;
@@ -42,7 +52,7 @@ inline flecsi::program_option<std::string>
 meshfile("mesh-file", "Filename for the mesh file.", 1);
 
 inline flecsi::program_option<test>
-test_case("Problem", "testcase,t", "Test case to run [1,5].",
+test_case("Problem", "testcase,t", "Test case to run [1,5,6].",
           {{flecsi::option_default, test::case1}});
 
 inline flecsi::program_option<std::size_t>
