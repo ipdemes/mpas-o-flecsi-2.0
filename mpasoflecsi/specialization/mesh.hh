@@ -129,7 +129,7 @@ inline const flecsi::field<double>::definition<mesh, mesh::vertices> fVertex;
 inline const flecsi::field<double>::definition<mesh, mesh::edges>    fEdge;
 inline const flecsi::field<double>::definition<mesh, mesh::cells>    bottomDepth;
 
-inline const flecsi::field<vdtensor<int>>::definition<mesh, mesh::vertices> kiteAreasOnVertex;
+inline const flecsi::field<vdtensor<double>>::definition<mesh, mesh::vertices> kiteAreasOnVertex;
 inline const flecsi::field<me2tensor<double>>::definition<mesh, mesh::edges> weightsOnEdge;
 
 }

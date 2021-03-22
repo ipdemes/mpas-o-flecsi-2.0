@@ -14,7 +14,7 @@ void compute_solve_diagnostics(mesh::accessor<flecsi::ro, flecsi::ro> m,
                                flecsi::field<double>::accessor<flecsi::ro, flecsi::ro> dcEdge,
                                flecsi::field<double>::accessor<flecsi::ro, flecsi::ro> areaCell,
                                flecsi::field<double>::accessor<flecsi::ro, flecsi::ro> areaTriangle,
-                               flecsi::field<vdtensor<int>>::accessor<flecsi::ro, flecsi::ro> kiteAreasOnVertex,
+                               flecsi::field<vdtensor<double>>::accessor<flecsi::ro, flecsi::ro> kiteAreasOnVertex,
                                flecsi::field<double>::accessor<flecsi::ro, flecsi::ro> fVertex,
                                flecsi::field<vltensor<double>>::accessor<flecsi::ro, flecsi::ro> h,
                                flecsi::field<vltensor<double>>::accessor<flecsi::ro, flecsi::ro> u,
@@ -109,7 +109,7 @@ void accumulate_update(mesh::accessor<ro, ro> m,
 
 void finalize_timestep(mesh::accessor<ro, ro> m,
                        acc<vlreal, ro, na> u_old,
-                       acc<vlreal, wo, na> u_new,
+                       acc<vlreal, rw, na> u_new,
                        acc<vlreal, ro, na> h_new,
                        acc<vltracer, rw, na> tracers_new);
 

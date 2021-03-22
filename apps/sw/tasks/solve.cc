@@ -14,7 +14,7 @@ void compute_solve_diagnostics(
     field<double>::accessor<ro, ro> dcEdge,
     field<double>::accessor<ro, ro> areaCell,
     field<double>::accessor<ro, ro> areaTriangle,
-    field<vdtensor<int>>::accessor<ro, ro> kiteAreasOnVertex,
+    field<vdtensor<double>>::accessor<ro, ro> kiteAreasOnVertex,
     field<double>::accessor<ro, ro> fVertex,
     field<vltensor<double>>::accessor<ro, ro> h,
     field<vltensor<double>>::accessor<ro, ro> u,
@@ -343,7 +343,7 @@ void accumulate_update(mesh::accessor<ro, ro> m,
 
 void finalize_timestep(mesh::accessor<ro, ro> m,
                        acc<vlreal, ro, na> u_old,
-                       acc<vlreal, wo, na> u_new,
+                       acc<vlreal, rw, na> u_new,
                        acc<vlreal, ro, na> h_new,
                        acc<vltracer, rw, na> tracers_new)
 {

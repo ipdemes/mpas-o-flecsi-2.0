@@ -176,8 +176,8 @@ public:
   {
     auto stride = dsreader(file, label, temp);
     for (auto ind : it) {
-      for (auto i = 0; i < arr(i).size(); i++) {
-        arr(ind)[i] = temp[ind];
+      for (auto i = 0; i < arr(0).size(); i++) {
+        arr(ind)[i] = temp[ind * stride + i];
       }
     }
     temp.clear();
