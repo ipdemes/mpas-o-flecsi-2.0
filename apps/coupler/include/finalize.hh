@@ -5,18 +5,13 @@
 
 #pragma once
 
-#include <mpasoflecsi/specialization/control.hh>
+#include "control.hh"
 
-#include <flecsi/flog.hh>
-
-namespace mpas {
-namespace sw {
+namespace coupler {
 namespace action {
 
 int finalize();
-
 inline control::action<finalize, cp::finalize> finalize_action;
 
-}
-}
-}
+} // namespace action
+} // namespace coupler

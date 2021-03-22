@@ -55,6 +55,7 @@ int read_fields()
   close_file(file);
 
   execute<task::init_bottom_depth>(m, bottomDepth(m));
+  execute<task::init_extra_fields>(m, tracers[curr](m));
 
   return 0;
 }
@@ -62,6 +63,7 @@ int read_fields()
 
 int init_testcase()
 {
+  control::state().init_steps(inputs::nsteps.value());
   switch (inputs::test_case.value()) {
   case test::case1 :
     execute<task::setup_case_1>(m, dvEdge(m), latCell(m), lonCell(m),

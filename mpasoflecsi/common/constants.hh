@@ -15,7 +15,6 @@ static constexpr std::size_t vertexDegree = 3;
 static constexpr std::size_t nVertLevels = 5;
 static constexpr std::size_t maxTracers = 5;
 static constexpr std::size_t deuce = 2;
-static constexpr std::size_t nOutputTimes = 41;
 }
 
 namespace mpas_constants {

@@ -25,7 +25,7 @@ extern "C" {
 #include <vector>
 
 #include "flecsi/flog.hh"
-#include "flecsi/topo/unstructured/types.hh"
+#include "flecsi/data.hh"
 
 
 namespace mpas {
@@ -876,7 +876,6 @@ read_connectivity_v_2D(hid_t file_handle,
   return dim2_size;
 }
 
-#if 0
 /**
  * \brief Write 1D dataset to a given *open* file
  *
@@ -933,7 +932,7 @@ write_dataset_2D(hid_t file_handle,
  * \param[in] dscale_name name of dimension scale to attach to dataset
  * \param[in] dim dimension index indicating which dimension to attach the scale
  */
-void
+inline void
 attach_scale(hid_t file_handle,
   const std::string & dset_name,
   const std::string & dscale_name,
@@ -945,7 +944,6 @@ attach_scale(hid_t file_handle,
   close_dataset(dset);
   close_dataset(ds_dset);
 }
-#endif
 } // namespace h5
 
 namespace detail {

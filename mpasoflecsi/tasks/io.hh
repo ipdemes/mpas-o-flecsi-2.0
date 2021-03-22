@@ -5,11 +5,45 @@
 
 #pragma once
 
-#include <mpasoflecsi/specialization/mesh.hh>
-
-#include "iohelper.hh"
+#include "mpasoflecsi/specialization/mesh.hh"
+#include "mpasoflecsi/io/helpers.hh"
 
 namespace mpas { namespace task {
+
+namespace detail {
+template<class D, class T>
+void
+output_field(mesh::accessor<ro, ro> m,
+             hid_t file,
+             int time_ind,
+             T field) {
+  typename io::helper<D::ndims, double>::type writer(file);
+  writer.template write_timestep<D::index_space>(
+    D::name, field, m, time_ind);
+
+  using namespace mpas::io::h5;
+  if(time_ind == 0) {
+    attach_scale(file, D::name, "Time", 0);
+    for(std::size_t i{0}; i < D::scales.size(); ++i) {
+      attach_scale(file, D::name, D::scales[i], i + 1);
+    }
+  }
+}
+}
+
+
+template<class D>
+struct field_output_wrapper;
+template<class... D>
+struct field_output_wrapper<type_list<D...>> {
+  static void output(mesh::accessor<ro, ro> m,
+                     hid_t file,
+                     int time_ind,
+                     typename D::field_type... fields) {
+    (detail::output_field<D>(m, file, time_ind, fields), ...);
+  }
+};
+
 
 void read_mesh_fields(mesh::accessor<flecsi::ro, flecsi::ro> m,
                       hid_t file,
@@ -30,5 +64,24 @@ void read_mesh_fields(mesh::accessor<flecsi::ro, flecsi::ro> m,
                       io::acc<double> meshDensity,
                       io::acc<double> fVertex,
                       io::acc<me2tensor<double>> weightsOnEdge);
+
+
+void mesh_output_init(mesh::accessor<ro, ro> m,
+                      acc<double, ro, na> areaCell,
+                      acc<double, ro, na> dvEdge,
+                      acc<double, ro, na> dcEdge,
+                      acc<double, ro, na> xCell,
+                      acc<double, ro, na> yCell,
+                      acc<double, ro, na> zCell,
+                      acc<double, ro, na> latCell,
+                      acc<double, ro, na> lonCell,
+                      acc<double, ro, na> latVertex,
+                      acc<double, ro, na> lonVertex,
+                      acc<double, ro, na> meshDensity,
+                      const char * mfile_name,
+                      hid_t * mfile);
+
+
+void mesh_output_finalize(hid_t mfile);
 
 }}

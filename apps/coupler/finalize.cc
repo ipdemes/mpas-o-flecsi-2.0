@@ -3,20 +3,19 @@
   All rights reserved
  *----------------------------------------------------------------------------*/
 
-#pragma once
-
-#include <mpasoflecsi/specialization/control.hh>
+#include "finalize.hh"
+#include "control.hh"
+#include "state.hh"
+#include "tasks/io.hh"
 
 #include <flecsi/flog.hh>
 
-namespace mpas {
-namespace sw {
-namespace action {
+using namespace flecsi;
 
-int finalize();
 
-inline control::action<finalize, cp::finalize> finalize_action;
+int
+coupler::action::finalize() {
+  execute<task::io>(mesh_src, mesh_trg, ud(mesh_src), vd(mesh_trg));
+  return 0;
+} // remap
 
-}
-}
-}

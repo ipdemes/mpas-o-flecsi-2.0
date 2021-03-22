@@ -18,13 +18,13 @@ void compute_solve_diagnostics(mesh::accessor<flecsi::ro, flecsi::ro> m,
                                flecsi::field<double>::accessor<flecsi::ro, flecsi::ro> fVertex,
                                flecsi::field<vltensor<double>>::accessor<flecsi::ro, flecsi::ro> h,
                                flecsi::field<vltensor<double>>::accessor<flecsi::ro, flecsi::ro> u,
-                               flecsi::field<vltensor<double>>::accessor<flecsi::rw, flecsi::ro> h_edge,
-                               flecsi::field<vltensor<double>>::accessor<flecsi::rw, flecsi::ro> h_vertex,
-                               flecsi::field<vltensor<double>>::accessor<flecsi::rw, flecsi::ro> circulation,
-                               flecsi::field<vltensor<double>>::accessor<flecsi::rw, flecsi::ro> vorticity,
-                               flecsi::field<vltensor<double>>::accessor<flecsi::rw, flecsi::ro> ke,
-                               flecsi::field<vltensor<double>>::accessor<flecsi::rw, flecsi::ro> pv_edge,
-                               flecsi::field<vltensor<double>>::accessor<flecsi::rw, flecsi::ro> pv_vertex);
+                               flecsi::field<vltensor<double>>::accessor<flecsi::wo, flecsi::na> h_edge,
+                               flecsi::field<vltensor<double>>::accessor<flecsi::wo, flecsi::na> h_vertex,
+                               flecsi::field<vltensor<double>>::accessor<flecsi::wo, flecsi::na> circulation,
+                               flecsi::field<vltensor<double>>::accessor<flecsi::wo, flecsi::na> vorticity,
+                               flecsi::field<vltensor<double>>::accessor<flecsi::wo, flecsi::na> ke,
+                               flecsi::field<vltensor<double>>::accessor<flecsi::wo, flecsi::na> pv_edge,
+                               flecsi::field<vltensor<double>>::accessor<flecsi::wo, flecsi::na> pv_vertex);
 
 void init_provis(mesh::accessor<ro, ro> m,
                  acc<vlreal, ro, na> u_old,
@@ -81,7 +81,7 @@ void compute_scalar_tend(mesh::accessor<ro, ro> m,
                          acc<vlreal, ro, ro> h_edge,
                          acc<vlreal, ro, ro> u,
                          acc<vltracer, ro, ro> tracers,
-                         acc<vltracer, rw, na> tracer_tend);
+                         acc<vltracer, wo, na> tracer_tend);
 
 
 void compute_substep(mesh::accessor<ro, ro> m,
@@ -127,5 +127,12 @@ void timeshift(mesh::accessor<ro, ro> m,
                acc<vlreal, ro, na> h_edge_new,
                acc<vlreal, ro, na> ke_new,
                acc<vlreal, ro, na> pv_edge_new);
+
+double compute_error(mesh::accessor<ro, ro> m,
+                     acc<vlreal, ro, na> h,
+                     acc<double, ro, na> latCell,
+                     acc<double, ro, na> lonCell,
+                     acc<double, ro, na> areaCell,
+                     double elapsed);
 
 }}}

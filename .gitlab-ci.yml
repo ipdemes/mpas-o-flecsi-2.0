@@ -58,7 +58,7 @@ mpich-legion-gnu:release:
   variables:
     ENVIRONMENT: devel
     MPI_PROVIDER: mpich
-    REGISTRY: gitlab.lal.gov:5050/mpas/mpas-o-flecsi-2.0
+    REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
     IMAGE: centos-8
     BUILD_TYPE: Release
     RUNTIME: legion
