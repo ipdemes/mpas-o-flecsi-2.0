@@ -1,0 +1,217 @@
+#------------------------------------------------------------------------------#
+# FleCSI Gitlab CI: Main
+#------------------------------------------------------------------------------#
+
+stages:
+  - Environment
+  - Build + Unit Tests
+
+variables:
+  COLOR_BLUE: '\033[1;34m'
+  COLOR_GREEN: '\033[0;32m'
+  COLOR_MAGENTA: '\033[1;35m'
+  COLOR_PLAIN: '\033[0m'
+
+include: .gitlab/environments.yml
+
+#------------------------------------------------------------------------------#
+# Build and unit tests for default settings.
+#
+# Image: CentOS 7.8
+#------------------------------------------------------------------------------#
+
+mpich-defaults:
+  extends: .defaults_build_template
+  needs:
+    ["mpich"]
+  variables:
+    ENVIRONMENT: devel
+    MPI_PROVIDER: mpich
+    REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
+    IMAGE: centos-8
+
+#------------------------------------------------------------------------------#
+# Build and unit tests for Legion runtime with MPICH provider,
+# and GNU compiler toolchain.
+#
+# Image: CentOS 7.8
+#------------------------------------------------------------------------------#
+
+mpich-legion-gnu:
+  extends: .build_template
+  needs:
+    ["mpich"]
+  variables:
+    ENVIRONMENT: devel
+    MPI_PROVIDER: mpich
+    REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
+    IMAGE: centos-8
+    BUILD_TYPE: Debug
+    RUNTIME: legion
+    CXX_COMPILER: g++
+    C_COMPILER: gcc
+
+mpich-legion-gnu:release:
+  extends: .build_template
+  needs:
+    ["mpich"]
+  variables:
+    ENVIRONMENT: devel
+    MPI_PROVIDER: mpich
+    REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
+    IMAGE: centos-8
+    BUILD_TYPE: Release
+    RUNTIME: legion
+    CXX_COMPILER: g++
+    C_COMPILER: gcc
+
+#------------------------------------------------------------------------------#
+# Build and unit tests for MPI runtime with MPICH provider,
+# and GNU compiler toolchain.
+#
+# Image: CentOS 7.8
+#------------------------------------------------------------------------------#
+
+mpich-mpi-gnu:
+  extends: .build_template
+  needs:
+    ["mpich"]
+  variables:
+    ENVIRONMENT: devel
+    MPI_PROVIDER: mpich
+    REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
+    IMAGE: centos-8
+    BUILD_TYPE: Debug
+    RUNTIME: mpi
+    CXX_COMPILER: g++
+    C_COMPILER: gcc
+
+mpich-mpi-gnu:release:
+  extends: .build_template
+  needs:
+    ["mpich"]
+  variables:
+    ENVIRONMENT: devel
+    MPI_PROVIDER: mpich
+    REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
+    IMAGE: centos-8
+    BUILD_TYPE: Release
+    RUNTIME: mpi
+    CXX_COMPILER: g++
+    C_COMPILER: gcc
+
+#------------------------------------------------------------------------------#
+# Build and unit tests for Legion runtime with OpenMPI provider,
+# and GNU compiler toolchain.
+#
+# Image: CentOS 7.8
+#------------------------------------------------------------------------------#
+
+openmpi-legion-gnu:
+  extends: .build_template
+  needs:
+    ["openmpi"]
+  variables:
+    ENVIRONMENT: devel
+    MPI_PROVIDER: openmpi
+    REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
+    IMAGE: centos-8
+    BUILD_TYPE: Debug
+    RUNTIME: legion
+    CXX_COMPILER: g++
+    C_COMPILER: gcc
+
+openmpi-legion-gnu:release:
+  extends: .build_template
+  needs:
+    ["openmpi"]
+  variables:
+    ENVIRONMENT: devel
+    MPI_PROVIDER: openmpi
+    REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
+    IMAGE: centos-8
+    BUILD_TYPE: Release
+    RUNTIME: legion
+    CXX_COMPILER: g++
+    C_COMPILER: gcc
+
+#------------------------------------------------------------------------------#
+# Build and unit tests for MPI runtime with OpenMPI provider,
+# and GNU compiler toolchain.
+#
+# Image: CentOS 7.8
+#------------------------------------------------------------------------------#
+
+openmpi-mpi-gnu:
+  extends: .build_template
+  needs:
+    ["openmpi"]
+  variables:
+    ENVIRONMENT: devel
+    MPI_PROVIDER: openmpi
+    REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
+    IMAGE: centos-8
+    BUILD_TYPE: Debug
+    RUNTIME: mpi
+    CXX_COMPILER: g++
+    C_COMPILER: gcc
+
+openmpi-mpi-gnu:release:
+  extends: .build_template
+  needs:
+    ["openmpi"]
+  variables:
+    ENVIRONMENT: devel
+    MPI_PROVIDER: openmpi
+    REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
+    IMAGE: centos-8
+    BUILD_TYPE: Release
+    RUNTIME: mpi
+    CXX_COMPILER: g++
+    C_COMPILER: gcc
+
+#------------------------------------------------------------------------------#
+# Build and unit tests for Legion runtime with MPICH provider,
+# and Clang compiler toolchain.
+#
+# Image: CentOS 7.8
+#------------------------------------------------------------------------------#
+
+mpich-legion-clang:
+  extends: .build_template
+  needs:
+    ["mpich-clang"]
+  variables:
+    ENVIRONMENT: devel
+    MPI_PROVIDER: mpich
+    REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
+    IMAGE: clearlinux
+    BUILD_TYPE: Debug
+    RUNTIME: legion
+    CXX_COMPILER: clang++
+    CXX_FLAGS: -fcolor-diagnostics 
+    C_COMPILER: clang
+    C_FLAGS: ${CXX_FLAGS}
+
+#------------------------------------------------------------------------------#
+# Build and unit tests for MPI runtime with MPICH provider,
+# and Clang compiler toolchain.
+#
+# Image: CentOS 7.8
+#------------------------------------------------------------------------------#
+
+mpich-mpi-clang:
+  extends: .build_template
+  needs:
+    ["mpich-clang"]
+  variables:
+    ENVIRONMENT: devel
+    MPI_PROVIDER: mpich
+    REGISTRY: gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0
+    IMAGE: clearlinux
+    BUILD_TYPE: Debug
+    RUNTIME: mpi
+    CXX_COMPILER: clang++
+    CXX_FLAGS: -fcolor-diagnostics
+    C_COMPILER: clang
+    C_FLAGS: ${CXX_FLAGS}
