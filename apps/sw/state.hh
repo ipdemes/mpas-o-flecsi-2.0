@@ -56,8 +56,12 @@ test_case("Problem", "testcase,t", "Test case to run [1,5,6].",
           {{flecsi::option_default, test::case1}});
 
 inline flecsi::program_option<std::size_t>
-    nsteps("Timesteps", "nsteps,s", "Number of timesteps to run.",
-           {{flecsi::option_default, 10}});
+nsteps("Problem", "nsteps,s", "Number of timesteps to run.",
+       {{flecsi::option_default, 10}});
+
+inline flecsi::program_option<double>
+delta_t("Problem", "dt,d", "Timestep size for time integrator.",
+        {{flecsi::option_default, 40}});
 
 using output_fields = type_list<io::desc::thickness,
                                 io::desc::topography,

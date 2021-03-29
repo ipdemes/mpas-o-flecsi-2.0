@@ -80,7 +80,7 @@ int run()
     execute<mpas::task::mesh_output_init, mpi>(m, areaCell(m), dvEdge(m), dcEdge(m),
                                                xCell(m), yCell(m), zCell(m),
                                                latCell(m), lonCell(m), latVertex(m), lonVertex(m),
-                                               meshDensity(m), "test.ncdf", &mfile);
+                                               meshDensity(m), "output.ncdf", &mfile);
     execute<output_task, mpi>(m, mfile, 0, h[curr](m), bottomDepth(m),
                               vorticity(m), pv_vertex(m), tracers[curr](m));
   }
@@ -92,9 +92,9 @@ int run()
                                            ke[curr](m), pv_edge[curr](m), pv_vertex(m));
 
   state.elapsed() = 0;
-  double dt = 40;
+  auto dt = inputs::delta_t.value();
   std::size_t time_cnt{1};
-  for (std::size_t i{1}; i <= state.steps(); ++i) {
+  for (std::size_t i{1}; i <= state.steps(); i++) {
     flog(info) << "Running timestep " << i << std::endl;
     advance_timestep(dt);
     if (state.output_step(i)) {
