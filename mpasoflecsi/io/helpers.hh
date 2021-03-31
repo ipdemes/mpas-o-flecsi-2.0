@@ -176,8 +176,8 @@ public:
   {
     auto stride = dsreader(file, label, temp);
     for (auto ind : it) {
-      for (auto i = 0; i < arr(i).size(); i++) {
-        arr(ind)[i] = temp[ind];
+      for (auto i = 0; i < arr(0).size(); i++) {
+        arr(ind)[i] = temp[ind * stride + i];
       }
     }
     temp.clear();
@@ -218,6 +218,51 @@ protected:
 };
 
 
+template<class T>
+class helper3d
+{
+public:
+  helper3d(hid_t infile) : file(infile) {}
+
+  template<mesh::index_space ispace, class ACC>
+  void write_timestep(const char * label,
+                      ACC & arr,
+                      mesh::accessor<ro, ro> m,
+                      std::size_t timestep) {
+    auto iter = it_from_ispace<ispace>(m);
+    std::size_t gsize = iter.size();
+
+    std::vector<hsize_t> coord;
+    auto DIM0 = arr(0).size();
+    auto DIM1 = arr(0)[0].size();
+    temp.resize(iter.size() * DIM0 * DIM1);
+    coord.resize(iter.size() * DIM0 * DIM1 * 4);
+    std::size_t count = 0;
+    for(auto ind : iter) {
+      for(int i = 0; i < DIM0; i++) {
+        for(int j = 0; j < DIM1; j++) {
+          temp[count] = arr(ind)[i][j];
+          coord[4 * count + 0] = timestep;
+          coord[4 * count + 1] = ind;
+          coord[4 * count + 2] = i;
+          coord[4 * count + 3] = j;
+          ++count;
+        }
+      }
+    }
+
+    mpi_ph5::write_buffer<4>(file, label,
+                             {inputs::num_output_times.value(), gsize, DIM0, DIM1},
+                             temp.size(), coord.data(), temp.data());
+    temp.clear();
+  }
+
+protected:
+  hid_t file;
+  std::vector<T> temp;
+};
+
+
 template<unsigned short ND, class T>
 struct helper;
 
@@ -225,6 +270,7 @@ template<class T>
 struct helper<1, T> { using type = helper1d<T>; };
 template<class T>
 struct helper<2, T> { using type = helper2d<T>; };
-
+template<class T>
+struct helper<3, T> { using type = helper3d<T>; };
 
 }}

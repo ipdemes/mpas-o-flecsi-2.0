@@ -7,6 +7,8 @@
 
 #include <flecsi/execution.hh>
 
+#include "mpasoflecsi/util/part.hh"
+
 namespace mpas { namespace io {
 namespace inputs {
 
@@ -20,19 +22,18 @@ class output_flagger
 {
 public:
   output_flagger(int num_timesteps) :
-    output_freq(static_cast<float>(num_timesteps) /
-                (inputs::num_output_times.value() - 2)) {}
+    part(num_timesteps, inputs::num_output_times.value() - 1) {}
 
   inline operator bool() const {
-    return output_freq != 0;
+    return inputs::num_output_times.value() > 0;
   }
 
   inline bool output_step(std::size_t i) const {
-    return output_freq and (i % output_freq == 0);
+    return part.high(part.owner(i)) == i;
   }
 
 protected:
-  int output_freq;
+  util::block_partition part;
 };
 
 }}

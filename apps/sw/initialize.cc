@@ -55,7 +55,7 @@ int read_fields()
   close_file(file);
 
   execute<task::init_bottom_depth>(m, bottomDepth(m));
-  execute<task::init_extra_fields>(m, tracers[curr](m));
+  execute<task::init_extra_fields>(m, vorticity(m), pv_vertex(m), tracers[curr](m));
 
   return 0;
 }
@@ -68,6 +68,18 @@ int init_testcase()
   case test::case1 :
     execute<task::setup_case_1>(m, dvEdge(m), latCell(m), lonCell(m),
                                 latVertex(m), lonVertex(m), u[curr](m), h[curr](m));
+    break;
+  case test::case5 :
+    execute<task::setup_case_5>(m, dvEdge(m), latCell(m), lonCell(m),
+                                latVertex(m), lonVertex(m),
+                                latEdge(m), lonEdge(m),
+                                bottomDepth(m), fVertex(m), fEdge(m),
+                                u[curr](m), h[curr](m), tracers[curr](m));
+    break;
+  case test::case6 :
+    execute<task::setup_case_6>(m, dvEdge(m), latCell(m), lonCell(m),
+                                latVertex(m), lonVertex(m),
+                                u[curr](m), h[curr](m));
     break;
   }
 
