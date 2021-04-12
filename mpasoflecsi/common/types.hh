@@ -43,6 +43,8 @@ using metensor = std::array<T, maxEdges>;
 template<class T>
 using me2tensor = std::array<T, maxEdges2>;
 
+using derivtensor = tensor_t<double, maxEdges2, 2>;
+
 template <class T, flecsi::partition_privilege_t P1, flecsi::partition_privilege_t P2>
 using acc = typename flecsi::template field<T>::template accessor<P1, P2>;
 

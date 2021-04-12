@@ -111,25 +111,44 @@ struct mesh : flecsi::topo::specialization<flecsi::topo::unstructured, mesh> {
 
 
 // mesh fields
-inline const flecsi::field<double>::definition<mesh, mesh::cells>    latCell;
-inline const flecsi::field<double>::definition<mesh, mesh::cells>    lonCell;
-inline const flecsi::field<double>::definition<mesh, mesh::vertices> latVertex;
-inline const flecsi::field<double>::definition<mesh, mesh::vertices> lonVertex;
-inline const flecsi::field<double>::definition<mesh, mesh::edges>    latEdge;
-inline const flecsi::field<double>::definition<mesh, mesh::edges>    lonEdge;
-inline const flecsi::field<double>::definition<mesh, mesh::cells>    xCell;
-inline const flecsi::field<double>::definition<mesh, mesh::cells>    yCell;
-inline const flecsi::field<double>::definition<mesh, mesh::cells>    zCell;
-inline const flecsi::field<double>::definition<mesh, mesh::cells>    meshDensity;
-inline const flecsi::field<double>::definition<mesh, mesh::edges>    dvEdge;
-inline const flecsi::field<double>::definition<mesh, mesh::edges>    dcEdge;
-inline const flecsi::field<double>::definition<mesh, mesh::vertices> areaTriangle;
+inline const flecsi::field<int>::definition<mesh, mesh::cells>    maxLevelCell;
+inline const flecsi::field<int>::definition<mesh, mesh::edges>    nEdgesOnEdge;
+
+inline const flecsi::field<double>::definition<mesh, mesh::edges>    angleEdge;
 inline const flecsi::field<double>::definition<mesh, mesh::cells>    areaCell;
-inline const flecsi::field<double>::definition<mesh, mesh::vertices> fVertex;
-inline const flecsi::field<double>::definition<mesh, mesh::edges>    fEdge;
+inline const flecsi::field<double>::definition<mesh, mesh::vertices> areaTriangle;
 inline const flecsi::field<double>::definition<mesh, mesh::cells>    bottomDepth;
+inline const flecsi::field<double>::definition<mesh, mesh::cells>    bottomDepthObserved;
+inline const flecsi::field<double>::definition<mesh, mesh::cells>    boundaryLayerDepth;
+inline const flecsi::field<double>::definition<mesh, mesh::edges>    dcEdge;
+inline const flecsi::field<double>::definition<mesh, mesh::edges>    dvEdge;
+inline const flecsi::field<double>::definition<mesh, mesh::cells>    fCell;
+inline const flecsi::field<double>::definition<mesh, mesh::edges>    fEdge;
+inline const flecsi::field<double>::definition<mesh, mesh::vertices> fVertex;
+inline const flecsi::field<double>::definition<mesh, mesh::cells>    latCell;
+inline const flecsi::field<double>::definition<mesh, mesh::edges>    latEdge;
+inline const flecsi::field<double>::definition<mesh, mesh::vertices> latVertex;
+inline const flecsi::field<double>::definition<mesh, mesh::cells>    lonCell;
+inline const flecsi::field<double>::definition<mesh, mesh::edges>    lonEdge;
+inline const flecsi::field<double>::definition<mesh, mesh::vertices> lonVertex;
+inline const flecsi::field<double>::definition<mesh, mesh::cells>    meshDensity;
+inline const flecsi::field<double>::definition<mesh, mesh::edges>    surfaceStress;
+inline const flecsi::field<double>::definition<mesh, mesh::cells>    xCell;
+inline const flecsi::field<double>::definition<mesh, mesh::edges>    xEdge;
+inline const flecsi::field<double>::definition<mesh, mesh::vertices> xVertex;
+inline const flecsi::field<double>::definition<mesh, mesh::cells>    yCell;
+inline const flecsi::field<double>::definition<mesh, mesh::edges>    yEdge;
+inline const flecsi::field<double>::definition<mesh, mesh::vertices> yVertex;
+inline const flecsi::field<double>::definition<mesh, mesh::cells>    zCell;
+inline const flecsi::field<double>::definition<mesh, mesh::edges>    zEdge;
+inline const flecsi::field<double>::definition<mesh, mesh::vertices> zVertex;
+
+inline const flecsi::field<vltensor<int>>::definition<mesh, mesh::edges>    edgeMask;
+
+inline const flecsi::field<vltensor<double>>::definition<mesh, mesh::cells>    restingThickness;
 
 inline const flecsi::field<vdtensor<double>>::definition<mesh, mesh::vertices> kiteAreasOnVertex;
+
 inline const flecsi::field<me2tensor<double>>::definition<mesh, mesh::edges> weightsOnEdge;
 
 }
