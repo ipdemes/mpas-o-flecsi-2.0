@@ -51,8 +51,8 @@ void read_mesh_fields(mesh::accessor<ro, ro> m,
     reader.read<cell_space>("lonCell", lonCell, m);
     reader.read<vert_space>("latVertex", latVertex, m);
     reader.read<vert_space>("lonVertex", lonVertex, m);
-    reader.read<vert_space>("latEdge", latEdge, m);
-    reader.read<vert_space>("lonEdge", lonEdge, m);
+    reader.read<edge_space>("latEdge", latEdge, m);
+    reader.read<edge_space>("lonEdge", lonEdge, m);
   }
 
   { // read 2D float datasets
