@@ -24,3 +24,9 @@ target_link_libraries(ocean
   mpasoflecsi
   ${MPAS_LIBRARY_DEPENDENCIES}
 )
+
+set (MPASFLECSI_DATA_DIR "${PROJECT_SOURCE_DIR}/data/")
+add_test(
+  NAME mpasflecsi_ocean
+  COMMAND $<TARGET_FILE:ocean> ${MPASFLECSI_DATA_DIR}/meshes/Sphere_240QU.nc -s 5 --num_output 0
+)
