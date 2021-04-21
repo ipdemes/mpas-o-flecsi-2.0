@@ -3,7 +3,7 @@
 # All rights reserved
 #------------------------------------------------------------------------------#
 
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.12...3.19)
 
 #------------------------------------------------------------------------------#
 # Set the project name.
@@ -39,6 +39,13 @@ enable_testing()
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
+#------------------------------------------------------------------------------#
+# Add flecsi module path.
+#------------------------------------------------------------------------------#
+
+find_package(FleCSICMake REQUIRED)
+list(APPEND CMAKE_MODULE_PATH ${FleCSICMake_PREFIX})
+
 #----------------------------------------------------------------------------#
 # These variables are used to collect library and include dependencies
 # for the MPASConfig file below.
@@ -55,17 +62,22 @@ set(MPAS_LIBRARY_DEPENDENCIES)
 #------------------------------------------------------------------------------#
 
 find_package(FleCSI REQUIRED)
-include_directories(${FleCSI_INCLUDE_DIRS})
+
+#----------------------------------------------------------------------------#
+# Unit tests and logging.
+#----------------------------------------------------------------------------#
+
+set(ENABLE_FLOG ${FleCSI_ENABLE_FLOG})
+set(FLECSI_RUNTIME_MODEL ${FleCSI_RUNTIME_MODEL})
+
+include(flog)
+set(FLECSI_UNIT_MAIN ${FleCSICMake_PREFIX}/unit-main.cc)
+include(unit)
+
 
 message (STATUS "FleCSI runtime model: " ${FleCSI_RUNTIME_MODEL})
 
-list (APPEND MPAS_LIBRARY_DEPENDENCIES ${FleCSI_LIBRARIES} ${FleCSI_LIBRARY_DEPENDENCIES})
-
-#------------------------------------------------------------------------------#
-# Find the Kokkos installation.
-#------------------------------------------------------------------------------#
-
-find_package(Kokkos REQUIRED)
+list (APPEND MPAS_LIBRARY_DEPENDENCIES FleCSI::FleCSI)
 
 #------------------------------------------------------------------------------#
 # HDF5
@@ -76,16 +88,6 @@ find_package(HDF5 COMPONENTS C HL REQUIRED)
 include_directories( ${HDF5_INCLUDE_DIRS} )
 list(APPEND MPAS_LIBRARY_DEPENDENCIES ${HDF5_LIBRARIES} ${HDF5_HL_LIBRARIES})
 message( STATUS "IO with HDF5 is enabled" )
-
-#------------------------------------------------------------------------------#
-# MPI
-#------------------------------------------------------------------------------#
-include(mpi)
-if(NOT MPI_${MPI_LANGUAGE}_FOUND)
-      message (FATAL_ERROR "MPI is required for mpasoflecsi`")
-endif()
-list(APPEND MPAS_LIBRARY_DEPENDENCIES ${DL_LIBS} ${MPI_LIBRARIES})
-
 
 #------------------------------------------------------------------------------#
 # Apps
@@ -100,7 +102,7 @@ add_subdirectory(apps)
 include(library)
 add_library_target(mpasoflecsi mpasoflecsi EXPORT_TARGET MPASOFleCSITargets)
 message(STATUS "MPAS Libs: " "${MPAS_LIBRARY_DEPENDENCIES}")
-target_link_libraries(mpasoflecsi PUBLIC ${MPAS_LIBRARY_DEPENDENCIES})
+target_link_libraries(mpasoflecsi LINK_PUBLIC ${MPAS_LIBRARY_DEPENDENCIES})
 
 #----------------------------------------------------------------------------#
 # CMake config file: This should be the last thing to happen.
