@@ -62,7 +62,6 @@ set(MPAS_LIBRARY_DEPENDENCIES)
 #------------------------------------------------------------------------------#
 
 find_package(FleCSI REQUIRED)
-include_directories(${FleCSI_INCLUDE_DIRS})
 
 #----------------------------------------------------------------------------#
 # Unit tests and logging.

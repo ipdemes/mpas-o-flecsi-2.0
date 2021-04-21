@@ -66,7 +66,7 @@ struct cartmesh : flecsi::topo::specialization<flecsi::topo::narray, cartmesh> {
     template<axis A, range SE = interior>
     auto cells() {
       if constexpr(SE == interior) {
-        auto const & md = B::meta_.get();
+        auto const & md = *(this->meta_);
         return flecsi::topo::make_ids<index_space::cells>(
           flecsi::util::iota_view<flecsi::util::id>(
             md.logical[index_space::cells][0][A] + 1,
