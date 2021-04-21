@@ -55,10 +55,30 @@ struct control_policy {
   inline double & elapsed() { return elapsed_time; }
   inline double elapsed() const { return elapsed_time; }
 
+  inline bool & rk4_config() { return rk4On; }
+  inline bool rk4_config() const { return rk4On; }
+
+  inline bool & se_config() { return seOn; }
+  inline bool se_config() const { return seOn; }
+
+  inline bool & monoAdvect_config() { return monoAdvectOn; }
+  inline bool monoAdvect_config() const { return monoAdvectOn; }
+
+  inline bool & hmix_config() { return hmixOn; }
+  inline bool hmix_config() const { return hmixOn; }
+
+  inline double & hmix_coef() { return horizDiffCoef; }
+  inline double hmix_coef() const { return horizDiffCoef; }
+
 protected:
   std::size_t nsteps;
   std::unique_ptr<io::output_flagger> output_flag;
   double elapsed_time;
+  bool rk4On = false;
+  bool seOn = false;
+  bool monoAdvectOn = false;
+  bool hmixOn = false;
+  double horizDiffCoef;
 }; // struct control_policy
 
 using control = flecsi::run::control<control_policy>;

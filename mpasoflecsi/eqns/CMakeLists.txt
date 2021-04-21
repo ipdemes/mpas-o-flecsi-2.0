@@ -3,6 +3,7 @@
 # All rights reserved
 #------------------------------------------------------------------------------#
 set(eqns_HEADERS
+  matrix.hh
   metrics.hh
 )
 

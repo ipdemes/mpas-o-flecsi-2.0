@@ -12,8 +12,11 @@ static constexpr std::size_t maxEdges = 8;
 static constexpr std::size_t maxEdges2 = maxEdges * 2;
 static constexpr std::size_t nAdvectionCells = maxEdges2;
 static constexpr std::size_t vertexDegree = 3;
+//static constexpr std::size_t nVertLevels = 20;
 static constexpr std::size_t nVertLevels = 5;
+//static constexpr std::size_t nVertLevels = 1;
 static constexpr std::size_t maxTracers = 5;
+//static constexpr std::size_t maxTracers = 1;
 static constexpr std::size_t deuce = 2;
 }
 

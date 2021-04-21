@@ -62,6 +62,100 @@ void read_mesh_fields(mesh::accessor<ro, ro> m,
   }
 }
 
+void read_ocean_mesh_fields(mesh::accessor<ro, ro> m,
+                      hid_t file,
+                      io::acc<double> angleEdge,
+                      io::acc<double> areaCell,
+                      io::acc<double> areaTriangle,
+                      io::acc<double> bottomDepth,
+                      io::acc<double> bottomDepthObserved,
+                      io::acc<double> dcEdge,
+                      io::acc<double> dvEdge,
+                      io::acc<vltensor<int>> edgeMask,
+                      io::acc<double> fCell,
+                      io::acc<double> fEdge,
+                      io::acc<double> fVertex,
+                      io::acc<vdtensor<double>> kiteAreasOnVertex,
+                      io::acc<double> latCell,
+                      io::acc<double> latEdge,
+                      io::acc<double> latVertex,
+//                      io::acc<vltensor<double>> layerThickness,
+                      io::acc<double> lonCell,
+                      io::acc<double> lonEdge,
+                      io::acc<double> lonVertex,
+//                      io::acc<int> maxLevelCell,
+                      io::acc<double> meshDensity,
+                      io::acc<int> nEdgesOnEdge,
+//                      io::acc<vltensor<double>> normalVelocity,
+                      io::acc<vltensor<double>> restingThickness,
+                      io::acc<vltracer> tracers,
+                      io::acc<me2tensor<double>> weightsOnEdge,
+                      io::acc<double> xCell,
+                      io::acc<double> xEdge,
+                      io::acc<double> xVertex,
+                      io::acc<double> yCell,
+                      io::acc<double> yEdge,
+                      io::acc<double> yVertex,
+                      io::acc<double> zCell,
+                      io::acc<double> zEdge,
+                      io::acc<double> zVertex
+                      )
+{
+  using namespace mpas::io;
+
+  constexpr auto cell_space = mesh::index_space::cells;
+  constexpr auto edge_space = mesh::index_space::edges;
+  constexpr auto vert_space = mesh::index_space::vertices;
+  { // read 1D float datasets
+    helper1d<double> reader(file);
+    reader.read<edge_space>("angleEdge", angleEdge, m);
+    reader.read<cell_space>("areaCell", areaCell, m);
+    reader.read<vert_space>("areaTriangle", areaTriangle, m);
+    reader.read<cell_space>("bottomDepth", bottomDepth, m);
+    reader.read<cell_space>("bottomDepthObserved", bottomDepthObserved, m);
+    reader.read<edge_space>("dcEdge", dcEdge, m);
+    reader.read<edge_space>("dvEdge", dvEdge, m);
+    reader.read<cell_space>("fCell", fCell, m);
+    reader.read<edge_space>("fEdge", fEdge, m);
+    reader.read<vert_space>("fVertex", fVertex, m);
+    reader.read<cell_space>("latCell", latCell, m);
+    reader.read<edge_space>("latEdge", latEdge, m);
+    reader.read<vert_space>("latVertex", latVertex, m);
+    reader.read<cell_space>("lonCell", lonCell, m);
+    reader.read<edge_space>("lonEdge", lonEdge, m);
+    reader.read<vert_space>("lonVertex", lonVertex, m);
+    reader.read<cell_space>("meshDensity", meshDensity, m);
+    reader.read<cell_space>("xCell", xCell, m);
+    reader.read<edge_space>("xEdge", xEdge, m);
+    reader.read<vert_space>("xVertex", xVertex, m);
+    reader.read<cell_space>("yCell", yCell, m);
+    reader.read<edge_space>("yEdge", yEdge, m);
+    reader.read<vert_space>("yVertex", yVertex, m);
+    reader.read<cell_space>("zCell", zCell, m);
+    reader.read<edge_space>("zEdge", zEdge, m);
+    reader.read<vert_space>("zVertex", zVertex, m);
+  }
+
+  { // read 1D int datasets
+    helper1d<int> reader(file);
+//    reader.read<cell_space>("maxLevelCell", maxLevelCell, m);
+    reader.read<edge_space>("nEdgesOnEdge", nEdgesOnEdge, m);
+  }
+
+  { // read 2D float datasets
+    helper2d<double> reader(file);
+    reader.read<vert_space>("kiteAreasOnVertex", kiteAreasOnVertex, m);
+//    reader.read<cell_space>("layerThickness", layerThickness, m);
+//    reader.read<edge_space>("normalVelocity", normalVelocity, m);
+    reader.read<cell_space>("restingThickness", restingThickness, m);
+    reader.read<edge_space>("weightsOnEdge", weightsOnEdge, m);
+  }
+
+  { // read 2D int datasets
+    helper2d<int> reader(file);
+    reader.read<edge_space>("edgeMask", edgeMask, m);
+  }
+}
 
 void mesh_output_init(mesh::accessor<ro, ro> m,
                       acc<double, ro, na> areaCell,
