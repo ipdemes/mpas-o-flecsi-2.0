@@ -22,10 +22,21 @@ ARG NEMPH="\e[0m"
 # overriden if desired in the CI, but which will not have to be built
 # during the CI run if they are not overriden by the user's merge request.
 #------------------------------------------------------------------------------#
+#RUN git config --global http.proxy "http://proxyout.lanl.gov:8080"
+#RUN export http_proxy=http://proxyout.lanl.gov:8080
+#RUN export https_proxy=http://proxyout.lanl.gov:8080
+#RUN env http_proxy=http://proxyout.lanl.gov:8080
+#RUN env https_proxy=http://proxyout.lanl.gov:8080
+#ENV http_proxy="proxyout.lanl.gov:8080"
+#RUN echo "proxy = proxyout.lanl.gov:8080" > ~/.curlrc
+
 
 RUN \
   echo -e "${EMPH}Cloning flecsi: ${SOURCE_BRANCH} from ${SOURCE_REPO}${NEMPH}"
 RUN git clone --single-branch --branch ${SOURCE_BRANCH} ${SOURCE_REPO} .flecsi
+
+
+RUN git clone --recursive https://github.com/ipdemes/mpas-o-flecsi-2.0.git
 
 #------------------------------------------------------------------------------#
 # Setup spack configuration.
@@ -39,8 +50,7 @@ RUN export GNU_VERSION=`cat .gnu_version` && \
     .spack-upstream/etc/spack/packages.yaml
 
 RUN . .spack-upstream/share/spack/setup-env.sh && \
-  spack compiler find && \
-  spack repo add .flecsi/spack-repo
+  spack compiler find
 
 RUN export GNU_VERSION=`cat .gnu_version` && \
   /home/flecsi/.clang_fortran.py '.spack/linux/compilers.yaml' \
@@ -58,26 +68,30 @@ RUN export GNU_VERSION=`cat .gnu_version` && \
 
 RUN cp .images/${SUBDIR}/spack/upstreams.yaml .spack/etc/spack
 
+RUN \
+  . .spack-upstream/share/spack/setup-env.sh \
+  && \
+  spack repo add mpas-o-flecsi-2.0/spack-repo
+
 #------------------------------------------------------------------------------#
 # Build flecsi dependencies with mpich provider.
 #------------------------------------------------------------------------------#
+#RUN git config --global --add remote.origin.proxy "http://proxyout.lanl.gov:8080" 
 
 RUN \
   . .spack-upstream/share/spack/setup-env.sh \
   && \
-  spack fetch --dependencies \
-    flecsi@devel backend=legion caliper_detail=low \
-    +graphviz \
+  spack fetch \
+    mpasoflecsi-deps backend=legion \
     +hdf5 \
     +kokkos \
-    ^mpich \
+    ^mpich ^legion network=gasnet conduit=mpi +shared+hdf5 ^hdf5+hl+mpi\
   && \
-  spack install --fail-fast --show-log-on-error --only dependencies \
-    flecsi@devel backend=legion caliper_detail=low build_type=Release \
-    +graphviz \
+  spack install --fail-fast --show-log-on-error \
+    mpasoflecsi-deps backend=legion build_type=Release \
     +hdf5 \
     +kokkos \
-    ^mpich
+    ^mpich ^legion network=gasnet conduit=mpi +shared+hdf5 ^hdf5+hl+mpi 
 
 #------------------------------------------------------------------------------#
 # Build flecsi dependencies with openmpi provider.
@@ -86,28 +100,13 @@ RUN \
 RUN \
   . .spack-upstream/share/spack/setup-env.sh \
   && \
-  spack fetch --dependencies \
-    flecsi@devel backend=legion caliper_detail=low \
-    +graphviz \
-    +hdf5 \
-    +kokkos \
-    ^openmpi \
+  spack fetch \
+    mpasoflecsi-deps backend=legion \
+    ^openmpi ^legion network=gasnet conduit=mpi +shared+hdf5 ^hdf5+hl+mpi\
   && \
-  spack install --fail-fast --show-log-on-error --only dependencies \
-    flecsi@devel backend=legion caliper_detail=low build_type=Release \
-    +graphviz \
-    +hdf5 \
-    +kokkos \
-    ^openmpi
-
-#------------------------------------------------------------------------------#
-# Create format environment.
-#------------------------------------------------------------------------------#
-
-RUN . .spack-upstream/share/spack/setup-env.sh && \
-  spack env create format && \
-  spack env activate format && \
-  spack install cmake
+  spack install --fail-fast --show-log-on-error \
+    mpasoflecsi-deps backend=legion  build_type=Release \
+    ^openmpi ^legion network=gasnet conduit=mpi +shared+hdf5 ^hdf5+hl+mpi
 
 #------------------------------------------------------------------------------#
 # Remove the lanl_ristra_flecsi repository so that the MR can override
@@ -115,7 +114,8 @@ RUN . .spack-upstream/share/spack/setup-env.sh && \
 #------------------------------------------------------------------------------#
 
 RUN . .spack/share/spack/setup-env.sh && \
-  spack repo remove lanl_ristra_flecsi
+  spack repo remove mpas_flecsi 
+  
 
 #------------------------------------------------------------------------------#
 # Set default shell for interactive.

@@ -25,9 +25,9 @@ project(FleCSI-CI LANGUAGES NONE)
 # Options
 #------------------------------------------------------------------------------#
 
-set(IMAGE_REPOSITORY "https://gitlab.lanl.gov/flecsi/flecsi.git" CACHE STRING
-  "Set the FleCSI image repository")
-set(IMAGE_BRANCH "images" CACHE STRING "Set the FleCSI image repository branch")
+set(IMAGE_REPOSITORY "git@github.com:ipdemes/mpas-o-flecsi-2.0.git" CACHE STRING
+	"Set the MPAS image repository")
+set(IMAGE_BRANCH "images" CACHE STRING "Set the MPAS image repository branch")
 
 set(SPACK_REPOSITORY "https://github.com/spack/spack.git" CACHE STRING
   "Set the Spack repository")
@@ -35,10 +35,10 @@ set(SPACK_BRANCH "develop" CACHE STRING "Set the Spack branch")
 
 set(SOURCE_REPOSITORY "https://gitlab.lanl.gov/flecsi/flecsi.git" CACHE STRING
   "Set the FleCSI source repository")
-set(SOURCE_BRANCH "devel" CACHE STRING
+set(SOURCE_BRANCH "2" CACHE STRING
   "Set the source repository branch")
 
-set(REGISTRY "gitlab.lanl.gov:5050/flecsi/flecsi" CACHE STRING
+set(REGISTRY "gitlab.lanl.gov:5050/mpas/mpas-o-flecsi-2.0" CACHE STRING
   "Set the registry")
 
 #------------------------------------------------------------------------------#
