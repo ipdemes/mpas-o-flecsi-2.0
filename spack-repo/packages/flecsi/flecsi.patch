@@ -1,22 +1,9 @@
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index def4e6a..65a2ce6 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -43,7 +43,7 @@ endif()
- # Version.
- #------------------------------------------------------------------------------#
- 
--include(version)
-+#include(version)
- 
- set(FleCSI_VERSION ${${PROJECT_NAME}_VERSION})
- 
 diff --git a/flecsi/topo/unstructured/coloring_utils.hh b/flecsi/topo/unstructured/coloring_utils.hh
-index e5af173..dda04df 100644
+index 3a54d12..125a82c 100644
 --- a/flecsi/topo/unstructured/coloring_utils.hh
 +++ b/flecsi/topo/unstructured/coloring_utils.hh
-@@ -445,26 +445,26 @@ closure(Definition const & md,
-       primary.owned.begin(), p.second.begin(), p.second.end());
+@@ -567,20 +567,20 @@ color(MD const & md,
+     primary.all.insert(primary.all.begin(), p.second.begin(), p.second.end());
  
      for(auto e : p.second) {
 -      if(shared.at(p.first).count(e)) {
@@ -29,77 +16,21 @@ index e5af173..dda04df 100644
 +      //  auto d = dependents.at(e);
 +      //  primary.shared.emplace_back(
 +      //    shared_entity{e, {dependents.at(e).begin(), dependents.at(e).end()}});
-+      //}
-+      //else {
++     // }
++     // else {
          primary.exclusive.emplace_back(e);
 -      } // if
-+      //} // if
++     // } // if
      } // for
  
--    for(auto e : ghosts.at(p.first)) {
--      primary.ghosts.emplace_back(ghost_entity{e, e2co.at(e)});
+-    for(auto e : ghost.at(p.first)) {
+-      primary.ghost.emplace_back(ghost_entity{e, e2co.at(e)});
+-      primary.all.emplace_back(e);
 -    } // for
-+    //for(auto e : ghosts.at(p.first)) {
-+    //  primary.ghosts.emplace_back(ghost_entity{e, e2co.at(e)});
++    //for(auto e : ghost.at(p.first)) {
++    //  primary.ghost.emplace_back(ghost_entity{e, e2co.at(e)});
++    //  primary.all.emplace_back(e);
 +    //} // for
  
+     util::force_unique(primary.all);
      util::force_unique(primary.owned);
-     util::force_unique(primary.exclusive);
-     util::force_unique(primary.shared);
-     util::force_unique(primary.ghosts);
- 
--#if 1
-+#if 0
-     std::stringstream ss;
-     ss << "color " << p.first << std::endl;
-     ss << log::container{primary.owned} << std::endl;
-diff --git a/flecsi/topo/unstructured/types.hh b/flecsi/topo/unstructured/types.hh
-index 5fb4f93..bd5b42c 100644
---- a/flecsi/topo/unstructured/types.hh
-+++ b/flecsi/topo/unstructured/types.hh
-@@ -203,8 +203,9 @@ struct unstructured_base {
-     field<util::id>::accessor1<privilege_cat(privilege_repeat(wo, N - (N > 1)),
-       privilege_repeat(na, N > 1))> fmd,
-     MPI_Comm const & comm) {
--    std::vector<std::size_t> entities;
- 
-+#if 0
-+    std::vector<std::size_t> entities;
-     /*
-       Define the entity ordering from coloring. This version uses the
-       mesh ordering, i.e., the entities are sorted by ascending mesh id.
-@@ -347,6 +348,14 @@ struct unstructured_base {
- 
-     num_intervals = util::mpi::all_gather(
-       [&local_itvls](int, int) { return local_itvls; }, comm);
-+#endif 
-+  (void) ic;
-+  (void) intervals;
-+  (void) src_points;
-+  (void) fmd;
-+  (void) comm;
-+  num_intervals = {{0}};
-+  
-   } // idx_itvls
- 
-   static void set_dests(field<data::intervals::Value>::accessor<wo> a,
-diff --git a/flecsi/util/parmetis.hh b/flecsi/util/parmetis.hh
-index f288e1a..abd2161 100644
---- a/flecsi/util/parmetis.hh
-+++ b/flecsi/util/parmetis.hh
-@@ -63,6 +63,7 @@ color(dcrs const & naive, idx_t colors, MPI_Comm comm = MPI_COMM_WORLD) {
-     } // for
-   } // if
- 
-+#if 0
-   // FIXME: Remove or guard
-   std::stringstream ss;
-   ss << "part size: " << part.size() << std::endl;
-@@ -71,6 +72,7 @@ color(dcrs const & naive, idx_t colors, MPI_Comm comm = MPI_COMM_WORLD) {
-   }
-   ss << std::endl;
-   flog_devel(info) << ss.str() << std::endl;
-+#endif 
- 
-   std::vector<idx_t> vtxdist = as<idx_t>(naive.distribution);
-   std::vector<idx_t> xadj = as<idx_t>(naive.offsets);
