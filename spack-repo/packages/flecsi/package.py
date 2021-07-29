@@ -22,7 +22,7 @@ class Flecsi(CMakePackage):
     git      = 'https://github.com/flecsi/flecsi.git'
 
     version('devel', branch='devel', submodules=False, preferred=False)
-    version('patch', commit='c64ebff4d679324ba1973afd1bdcfd5768a7dbfb')
+    version('patch', commit='536914ba77dd18c255b9a2979b4425c753a5619a')
 
     #--------------------------------------------------------------------------#
     # Variants
